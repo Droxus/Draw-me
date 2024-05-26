@@ -64,7 +64,7 @@ export class Scene {
     // this.#shapes.forEach(async function (shape) {
     //   await shape.draw(this.ctx);
     // });
-
+    this.setBackgroundColor(this.#color);
     for (const shape of this.#shapes) {
       await shape.draw(this.ctx);
     }
@@ -151,6 +151,11 @@ export class Scene {
     element.setAttribute("download", fileName);
 
     element.click();
+  }
+
+  setBackgroundColor(color) {
+    this.ctx.fillStyle = color;
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
   }
 
   /**
