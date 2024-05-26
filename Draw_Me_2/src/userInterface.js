@@ -8,12 +8,6 @@ const MODE = {
   CREATE: "Create",
 };
 
-// const shapeCreate = {
-//   Rectangle: this.controls.createRectangle,
-//   Circle: this.controls.createCircle,
-//   // Add other shapes here...
-// };
-
 export class UserInterface {
   controls;
   selectedShape;
@@ -34,7 +28,7 @@ export class UserInterface {
     this.init();
     this.selectMode = true;
 
-    this.mode = MODE.DRAW;
+    this.mode = MODE.SELECT;
     this.mouseHold = false;
     this.startSelecting = undefined;
     this.sizeSelecting = {};
@@ -187,7 +181,16 @@ export class UserInterface {
           break;
         case MODE.MOVE:
           if (this.selectedShape) {
+            let prevPosition = this.selectedShape.position;
             this.selectedShape.position = position;
+            if (this.selectedShape.endPoint) {
+              const xDiff = position.x - prevPosition.x;
+              const yDiff = position.y - prevPosition.y;
+              this.selectedShape.endPoint.x += xDiff / 2;
+              this.selectedShape.endPoint.y += yDiff / 2;
+              this.selectedShape.position.x -= xDiff / 2;
+              this.selectedShape.position.y -= yDiff / 2;
+            }
             scene.update();
           }
           break;

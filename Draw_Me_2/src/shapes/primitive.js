@@ -65,86 +65,78 @@ export class Primitive extends Shape {
   }
 
   isPoint({ x, y }) {
-    // console.log(x, y);
-    // console.log(this.position.x, this.position.y);
-    // console.log(this.width, this.height);
+    const corners = this.getRotatedRectangleCorners();
+    const bbox = this.getBoundingBox(corners);
+
     return (
-      x >= this.position.x - this.width / 2 &&
-      x <= this.position.x + this.width / 2 &&
-      y >= this.position.y - this.height / 2 &&
-      y <= this.position.y + this.height / 2
+      x >= bbox.x - bbox.width / 2 &&
+      x <= bbox.x + bbox.width / 2 &&
+      y >= bbox.y - bbox.height / 2 &&
+      y <= bbox.y + bbox.height / 2
     );
   }
 
-  rotatePoint(point, angle, origin) {
-    const radians = (Math.PI / 180) * angle;
-    const cos = Math.cos(radians);
-    const sin = Math.sin(radians);
-    const nx =
-      cos * (point.x - origin.x) - sin * (point.y - origin.y) + origin.x;
-    const ny =
-      sin * (point.x - origin.x) + cos * (point.y - origin.y) + origin.y;
-    return { x: nx, y: ny };
+  getRotatedRectangleCorners() {
+    const { x, y } = this.position;
+    const { width, height, rotation } = this;
+
+    const cx = x + width / 2;
+    const cy = y + height / 2;
+
+    const corners = [
+      { x: x, y: y }, // Top-left
+      { x: x + width, y: y }, // Top-right
+      { x: x, y: y + height }, // Bottom-left
+      { x: x + width, y: y + height }, // Bottom-right
+    ];
+
+    const rotatedCorners = corners.map((corner) => {
+      const dx = corner.x - cx;
+      const dy = corner.y - cy;
+      return {
+        x: cx + dx * Math.cos(rotation) - dy * Math.sin(rotation),
+        y: cy + dx * Math.sin(rotation) + dy * Math.cos(rotation),
+      };
+    });
+
+    return rotatedCorners;
   }
 
-  // getRotatedBoundingBox() {
-  //   const { x, y } = this.position;
-  //   const { width, height, rotation } = this;
+  getBoundingBox(corners) {
+    const xValues = corners.map((point) => point.x);
+    const yValues = corners.map((point) => point.y);
 
-  //   const halfWidth = width / 2;
-  //   const halfHeight = height / 2;
+    const minX = Math.min(...xValues);
+    const maxX = Math.max(...xValues);
+    const minY = Math.min(...yValues);
+    const maxY = Math.max(...yValues);
 
-  //   const corners = [
-  //     { x: x - halfWidth, y: y - halfHeight },
-  //     { x: x + halfWidth, y: y - halfHeight },
-  //     { x: x + halfWidth, y: y + halfHeight },
-  //     { x: x - halfWidth, y: y + halfHeight },
-  //   ];
+    const width = maxX - minX;
+    const height = maxY - minY;
 
-  //   const rotatedCorners = corners.map((corner) =>
-  //     this.rotatePoint(corner, rotation, this.position)
-  //   );
+    const xBboxDiff = this.width - width;
+    const yBboxDiff = this.height - height;
 
-  //   const minX = Math.min(...rotatedCorners.map((corner) => corner.x));
-  //   const maxX = Math.max(...rotatedCorners.map((corner) => corner.x));
-  //   const minY = Math.min(...rotatedCorners.map((corner) => corner.y));
-  //   const maxY = Math.max(...rotatedCorners.map((corner) => corner.y));
+    let xPos = minX - xBboxDiff / 2;
+    let yPos = minY - yBboxDiff / 2;
 
-  //   return {
-  //     x: minX,
-  //     y: minY,
-  //     width: maxX - minX,
-  //     height: maxY - minY,
-  //   };
-  // }
-
-  getRotatedBoundingBox() {
-    let minX = this.position.x,
-      minY = this.position.y;
     if (this.endPoint) {
-      minX = Math.min(this.position.x, this.endPoint.x);
-      minY = Math.min(this.position.y, this.endPoint.y);
-
-      minY = minY;
-      minX = minX + this.width / 2;
+      xPos += width / 2;
+      yPos += height / 2;
     }
 
-    const x = minX;
-    const y = minY;
-    const width = this.width;
-    const height = this.height;
-
     return {
-      x: x,
-      y: y,
-      width: width,
-      height: height,
+      x: xPos,
+      y: yPos,
+      width: maxX - minX,
+      height: maxY - minY,
     };
   }
 
   isInsideArea(area) {
     const { x, y, width, height } = area;
-    const boundingBox = this.getRotatedBoundingBox();
+    const corners = this.getRotatedRectangleCorners();
+    const boundingBox = this.getBoundingBox(corners);
 
     const bboxPoints = [
       {
