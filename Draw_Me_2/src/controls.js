@@ -167,7 +167,7 @@ export class Controls {
     return circle;
   }
 
-  createImage() {
+  async createImage() {
     const position = new Point(700, 500);
     const border = new Border({ color: "red", width: 2, type: [] });
     const picture = new Picture("./lion.jpg", {
