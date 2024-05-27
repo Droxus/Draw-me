@@ -1,12 +1,12 @@
-import { Point } from './point';
-import { Border } from './shapes/border';
-import { Brush } from './shapes/brush';
-import { Circle } from './shapes/primitives/circle';
-import { Label } from './shapes/primitives/label';
-import { Line } from './shapes/primitives/line';
-import { Picture } from './shapes/primitives/picture';
-import { Rectangle } from './shapes/primitives/rectangle';
-import { Triangle } from './shapes/primitives/triangle';
+import { Point } from "./point";
+import { Border } from "./shapes/border";
+import { Brush } from "./shapes/brush";
+import { Circle } from "./shapes/primitives/circle";
+import { Label } from "./shapes/primitives/label";
+import { Line } from "./shapes/primitives/line";
+import { Picture } from "./shapes/primitives/picture";
+import { Rectangle } from "./shapes/primitives/rectangle";
+import { Triangle } from "./shapes/primitives/triangle";
 
 export class ShapeFactory {
   static async createImage({ x, y, path }) {
@@ -95,7 +95,8 @@ export class ShapeFactory {
 
   static createBrush() {
     const color = "#ff0000";
-    const brush = new Brush(color);
+    const width = 2;
+    const brush = new Brush({ color: color, width: width });
     return brush;
   }
 }

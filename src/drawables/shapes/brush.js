@@ -1,4 +1,4 @@
-import { Shape } from '../shape.js';
+import { Shape } from "../shape.js";
 
 /**
  *
@@ -15,16 +15,20 @@ import { Shape } from '../shape.js';
 export class Brush extends Shape {
   #tracePoints;
   #color;
+  width;
 
-  constructor(color) {
+  constructor(params) {
+    const { color, width } = params;
     super();
     this.#color = color;
+    this.width = width;
     this.#tracePoints = [];
   }
 
   draw(ctx) {
     ctx.setTransform(1, 0, 0, 1, 0, 0);
-
+    ctx.setLineDash([]);
+    ctx.lineWidth = this.width;
     ctx.strokeStyle = this.color;
 
     ctx.beginPath();
