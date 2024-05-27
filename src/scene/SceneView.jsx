@@ -1,9 +1,12 @@
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  useState,
+} from 'react';
 
-import { Box } from "@mui/material";
+import { Box } from '@mui/material';
 
-import { useGlobalContext } from "../GlobalContext";
-import { Scene } from "./";
+import { useGlobalContext } from '../GlobalContext';
+import { Scene } from './';
 
 export function SceneView() {
   const { setScene } = useGlobalContext();
@@ -18,6 +21,8 @@ export function SceneView() {
     }
   }, [canvasRef]);
   return (
-    <Box component="canvas" ref={setCavasRef} width="100%" height="100%"></Box>
+    <Box component="div" width="100%" height="100%">
+      <canvas ref={setCavasRef}></canvas>
+    </Box>
   );
 }

@@ -34,7 +34,7 @@ function App() {
         <ControlsView />
       </Stack>
       <Divider orientation="horizontal" />
-      <Stack direction="row">
+      <Stack direction="row" flexGrow={1}>
         <Box component="aside" width={200} xs={2} py={4} px={2}>
           <PropertiesView />
         </Box>
