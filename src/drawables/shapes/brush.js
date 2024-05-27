@@ -1,4 +1,4 @@
-import { Shape } from "../shape.js";
+import { Shape } from '../shape.js';
 
 /**
  *
@@ -48,7 +48,7 @@ export class Brush extends Shape {
   }
 
   isPoint({ x, y }) {
-    return this.tracePoints.find(({ _x, _y }) => x == _x && y == _y);
+    return this.tracePoints.find((point) => x == point.x && y == point.y);
   }
 
   /**
@@ -56,6 +56,10 @@ export class Brush extends Shape {
    */
   get tracePoints() {
     return this.#tracePoints;
+  }
+
+  get position() {
+    return this.tracePoints[0];
   }
 
   /**
@@ -66,9 +70,20 @@ export class Brush extends Shape {
   }
 
   /**
+   * @return {string}
+   */
+  set color(value) {
+    return (this.#color = value);
+  }
+
+  /**
    * @param {Array} newTracePoints
    */
   set tracePoints(newTracePoints) {
     this.#tracePoints = newTracePoints;
+  }
+
+  getProperties() {
+    return ["color"];
   }
 }
