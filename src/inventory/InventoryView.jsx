@@ -61,9 +61,10 @@ export function InventoryView() {
             return (
               <Fragment key={shape.id}>
                 <Zoom in>
-                  <ListItem disablePadding disableGutters>
+                  <ListItem disableGutters>
                     <ListItemButton
                       disableGutters
+                      disableRipple
                       selected={
                         !!selectedShape &&
                         !!shape &&
@@ -77,7 +78,13 @@ export function InventoryView() {
                         alignItems="center"
                         flexGrow={1}
                       >
-                        <Stack direction="row" spacing={2} alignItems="center">
+                        <Stack
+                          direction="row"
+                          spacing={2}
+                          justifyContent="start"
+                          alignItems="center"
+                          alignSelf="start"
+                        >
                           <Icon
                             sx={{
                               bgcolor:
