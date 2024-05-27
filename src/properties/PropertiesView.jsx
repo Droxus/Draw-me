@@ -16,7 +16,7 @@ const debounce = (fn) => MUIDebounce(fn, 500);
 const PositionProperty = ({ shape, scene, property, title = "Position" }) => (
   <Stack direction="column" spacing={1}>
     <Typography variant="caption">{title}</Typography>
-    <Stack direction="row" spacing={2}>
+    <Stack direction="row" spacing={1}>
       <TextField
         label="X"
         defaultValue={shape[property]?.x}
@@ -80,7 +80,7 @@ const RendererByProperty = {
   border: ({ shape, scene, property }) => (
     <Stack direction="column" spacing={1}>
       <Typography variant="caption">Border</Typography>
-      <Stack direction="row" spacing={2}>
+      <Stack direction="row" spacing={1}>
         <TextField
           sx={{ flexGrow: 1 }}
           label="Color"
@@ -176,7 +176,7 @@ export function PropertiesView() {
           if (!Renderer) return null;
           return (
             <Renderer
-              key={property}
+              key={`${selected.id}-${property}`}
               property={property}
               shape={selected}
               scene={scene}

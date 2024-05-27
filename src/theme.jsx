@@ -1,6 +1,9 @@
 import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
+  app: {
+    sidePanelWidth: 250,
+  },
   palette: {
     mode: "light",
     primary: {

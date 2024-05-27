@@ -44,7 +44,7 @@ export class ShapeFactory {
     const label = new Label("Hello, World!", {
       position: position,
       rotation: 0,
-      color: "red",
+      color: "#ff0000",
       width: 200,
       height: 50,
       border: border,
@@ -58,7 +58,7 @@ export class ShapeFactory {
     const rectangle = new Rectangle({
       position: position,
       rotation: 0,
-      color: "red",
+      color: "#ff0000",
       width: 200,
       height: 50,
       border: border,
@@ -72,7 +72,7 @@ export class ShapeFactory {
     const endPoint = new Point(x, y);
     const line = new Line(startPoint, endPoint, {
       rotation: 0,
-      color: "green",
+      color: "#00ff00",
     });
 
     return line;
@@ -94,7 +94,7 @@ export class ShapeFactory {
   }
 
   static createBrush() {
-    const color = "red";
+    const color = "#ff0000";
     const brush = new Brush(color);
     return brush;
   }

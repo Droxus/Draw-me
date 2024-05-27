@@ -5,6 +5,7 @@ import {
   Divider,
   Stack,
   Typography,
+  useTheme,
 } from '@mui/material';
 
 import { ControlsView } from './controls';
@@ -13,6 +14,7 @@ import { PropertiesView } from './properties/PropertiesView';
 import { SceneView } from './scene/SceneView';
 
 function App() {
+  const theme = useTheme();
   return (
     <Stack direction="column" width="100%" height="100%">
       <Stack component="header" direction="row" alignItems="center" spacing={1}>
@@ -35,7 +37,13 @@ function App() {
       </Stack>
       <Divider orientation="horizontal" />
       <Stack direction="row" flexGrow={1}>
-        <Box component="aside" width={200} xs={2} py={4} px={2}>
+        <Box
+          component="aside"
+          width={theme.app.sidePanelWidth}
+          xs={2}
+          py={4}
+          px={2}
+        >
           <PropertiesView />
         </Box>
         <Divider orientation="vertical" />
@@ -43,7 +51,13 @@ function App() {
           <SceneView />
         </Box>
         <Divider orientation="vertical" />
-        <Box component="aside" width={200} xs={2} py={4} px={2}>
+        <Box
+          component="aside"
+          width={theme.app.sidePanelWidth}
+          xs={2}
+          py={4}
+          px={2}
+        >
           <InventoryView />
         </Box>
       </Stack>
