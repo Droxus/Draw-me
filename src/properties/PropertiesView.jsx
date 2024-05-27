@@ -1,4 +1,9 @@
 import {
+  useEffect,
+  useState,
+} from 'react';
+
+import {
   debounce as MUIDebounce,
   InputAdornment,
   Stack,
@@ -13,33 +18,50 @@ import { useSelectedShape } from '../hooks';
 
 const debounce = (fn) => MUIDebounce(fn, 0);
 
+const NumberInput = ({ label, value: propValue, onChange, units = "px" }) => {
+  const [value, setValue] = useState(propValue);
+  useEffect(() => {
+    setValue(value);
+  }, [propValue]);
+  return (
+    <TextField
+      label={label}
+      value={value}
+      type="text"
+      onChange={(event) => {
+        const value = event.target.value.slice(0, 4) || "0";
+        if (/^\d+$/g.test(value)) {
+          setValue(value);
+          onChange(event);
+        }
+      }}
+      size="small"
+      InputProps={{
+        endAdornment: <InputAdornment position="end">{units}</InputAdornment>,
+      }}
+    />
+  );
+};
+
 const PositionProperty = ({ shape, scene, property, title = "Position" }) => (
   <Stack direction="column" spacing={1}>
     <Typography variant="caption">{title}</Typography>
     <Stack direction="row" spacing={1}>
-      <TextField
+      <NumberInput
         label="X"
-        defaultValue={shape[property]?.x}
+        value={shape[property]?.x}
         onChange={debounce((event) => {
           shape.position.x = event.target.value;
           scene.update();
         })}
-        size="small"
-        InputProps={{
-          endAdornment: <InputAdornment position="end">px</InputAdornment>,
-        }}
       />
-      <TextField
+      <NumberInput
         label="Y"
-        defaultValue={shape[property]?.y}
+        value={shape[property]?.y}
         onChange={debounce((event) => {
           shape.position.y = event.target.value;
           scene.update();
         })}
-        size="small"
-        InputProps={{
-          endAdornment: <InputAdornment position="end">px</InputAdornment>,
-        }}
       />
     </Stack>
   </Stack>
@@ -52,17 +74,14 @@ const RendererByProperty = {
   ),
   endPoint: (props) => <PositionProperty {...props} title="End Point" />,
   rotation: ({ shape, scene, property }) => (
-    <TextField
+    <NumberInput
       label="Rotation"
-      defaultValue={shape.rotation}
+      value={shape.rotation}
       onChange={debounce((event) => {
         shape.rotation = event.target.value;
         scene.update();
       })}
-      size="small"
-      InputProps={{
-        endAdornment: <InputAdornment position="start">rad</InputAdornment>,
-      }}
+      units="rad"
     />
   ),
   color: ({ shape, scene, property }) => (
@@ -93,51 +112,36 @@ const RendererByProperty = {
           size="small"
           fullWidth
         />
-        <TextField
+        <NumberInput
           label="Thickness"
-          type="number"
-          defaultValue={shape.border.width}
+          value={shape.border.width}
           onChange={debounce((event) => {
             shape.border.width = event.target.value;
             scene.update();
           })}
-          size="small"
-          InputProps={{
-            endAdornment: <InputAdornment position="start">px</InputAdornment>,
-          }}
         />
       </Stack>
     </Stack>
   ),
   width: ({ shape, scene, property }) => (
-    <TextField
+    <NumberInput
       label="Width"
-      type="number"
-      defaultValue={shape.width}
+      value={shape.width}
       onChange={debounce((event) => {
         shape.width = event.target.value > 0 ? event.target.value : shape.width;
         scene.update();
       })}
-      size="small"
-      InputProps={{
-        endAdornment: <InputAdornment position="start">px</InputAdornment>,
-      }}
     />
   ),
   height: ({ shape, scene, property }) => (
-    <TextField
+    <NumberInput
       label="Height"
-      type="number"
-      defaultValue={shape.height}
+      value={shape.height}
       onChange={debounce((event) => {
         shape.height =
           event.target.value > 0 ? event.target.value : shape.height;
         scene.update();
       })}
-      size="small"
-      InputProps={{
-        endAdornment: <InputAdornment position="start">px</InputAdornment>,
-      }}
     />
   ),
   text: ({ shape, scene, property }) => (
