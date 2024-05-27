@@ -4,7 +4,6 @@ import {
 } from 'react';
 
 import {
-  debounce as MUIDebounce,
   InputAdornment,
   Stack,
   TextField,
@@ -15,8 +14,6 @@ import { useGlobalContext } from '../GlobalContext';
 import { useSelectedShape } from '../hooks';
 
 ["position", "rotation", "color", "border", "width", "height"];
-
-const debounce = (fn) => MUIDebounce(fn, 0);
 
 const NumberInput = ({ label, value: propValue, onChange, units = "px" }) => {
   const [value, setValue] = useState(propValue);
@@ -29,10 +26,12 @@ const NumberInput = ({ label, value: propValue, onChange, units = "px" }) => {
       value={value}
       type="text"
       onChange={(event) => {
-        const value = event.target.value.slice(0, 4) || "0";
-        if (/^\d+$/g.test(value)) {
+        const value = parseFloat(
+          event.target.value.slice(0, 4) || "0"
+        ).toString(10);
+        if (/^[\d|\.?]+$/g.test(value) || value === "") {
           setValue(value);
-          onChange(event);
+          onChange({ ...event, target: { ...event.target, value } });
         }
       }}
       size="small"
@@ -50,18 +49,18 @@ const PositionProperty = ({ shape, scene, property, title = "Position" }) => (
       <NumberInput
         label="X"
         value={shape[property]?.x}
-        onChange={debounce((event) => {
+        onChange={(event) => {
           shape.position.x = event.target.value;
           scene.update();
-        })}
+        }}
       />
       <NumberInput
         label="Y"
         value={shape[property]?.y}
-        onChange={debounce((event) => {
+        onChange={(event) => {
           shape.position.y = event.target.value;
           scene.update();
-        })}
+        }}
       />
     </Stack>
   </Stack>
@@ -77,88 +76,114 @@ const RendererByProperty = {
     <NumberInput
       label="Rotation"
       value={shape.rotation}
-      onChange={debounce((event) => {
+      onChange={(event) => {
         shape.rotation = event.target.value;
         scene.update();
-      })}
+      }}
       units="rad"
     />
   ),
-  color: ({ shape, scene, property }) => (
-    <TextField
-      label="Fill color"
-      type="color"
-      defaultValue={shape.color}
-      onChange={debounce((event) => {
-        shape.color = event.target.value;
-        scene.update();
-      })}
-      size="small"
-    />
-  ),
-  border: ({ shape, scene, property }) => (
-    <Stack direction="column" spacing={1}>
-      <Typography variant="caption">Border</Typography>
-      <Stack direction="row" spacing={1}>
-        <TextField
-          sx={{ flexGrow: 1 }}
-          label="Color"
-          type="color"
-          defaultValue={shape.border.color}
-          onChange={debounce((event) => {
-            shape.border.color = event.target.value;
-            scene.update();
-          })}
-          size="small"
-          fullWidth
-        />
-        <NumberInput
-          label="Thickness"
-          value={shape.border.width}
-          onChange={debounce((event) => {
-            shape.border.width = event.target.value;
-            scene.update();
-          })}
-        />
+  color: ({ shape, scene, property }) => {
+    const [value, setValue] = useState(shape.color);
+    useEffect(() => {
+      setValue(shape.color);
+    }, [shape.color]);
+    return (
+      <TextField
+        key={`${shape.id}-${property}`}
+        label="Fill color"
+        type="color"
+        value={value}
+        onChange={(event) => {
+          shape.color = event.target.value;
+          scene.update();
+          setValue(event.target.value);
+        }}
+        size="small"
+      />
+    );
+  },
+  border: ({ shape, scene, property }) => {
+    const [color, setColor] = useState();
+    useEffect(() => {
+      setColor(shape.border.color);
+    }, [shape.border.color]);
+    const [width, setWidth] = useState(shape.border.width);
+    useEffect(() => {
+      setWidth(shape.border.width);
+    }, [shape.border.width]);
+    return (
+      <Stack direction="column" spacing={1}>
+        <Typography variant="caption">Border</Typography>
+        <Stack direction="row" spacing={1}>
+          <TextField
+            sx={{ flexGrow: 1 }}
+            label="Color"
+            type="color"
+            value={color}
+            onChange={(event) => {
+              setColor(event.target.value);
+              shape.border.color = event.target.value;
+              scene.update();
+            }}
+            size="small"
+            fullWidth
+          />
+          <NumberInput
+            label="Thickness"
+            value={width}
+            onChange={(event) => {
+              setWidth(event.target.value);
+              shape.border.width = event.target.value;
+              scene.update();
+            }}
+          />
+        </Stack>
       </Stack>
-    </Stack>
-  ),
+    );
+  },
   width: ({ shape, scene, property }) => (
     <NumberInput
       label="Width"
       value={shape.width}
-      onChange={debounce((event) => {
+      onChange={(event) => {
         shape.width = event.target.value > 0 ? event.target.value : shape.width;
         scene.update();
-      })}
+      }}
     />
   ),
   height: ({ shape, scene, property }) => (
     <NumberInput
       label="Height"
       value={shape.height}
-      onChange={debounce((event) => {
+      onChange={(event) => {
         shape.height =
           event.target.value > 0 ? event.target.value : shape.height;
         scene.update();
-      })}
-    />
-  ),
-  text: ({ shape, scene, property }) => (
-    <TextField
-      label="Text"
-      defaultValue={shape[property]}
-      onChange={debounce((event) => {
-        console.debug("Setting text: %o", event.target.value);
-        shape[property] = event.target.value;
-        scene.update();
-      })}
-      size="small"
-      InputProps={{
-        multiline: true,
       }}
     />
   ),
+  text: ({ shape, scene, property }) => {
+    const [value, setValue] = useState(shape[property]);
+    useEffect(() => {
+      setValue(shape[property]);
+    }, [shape[property]]);
+    return (
+      <TextField
+        label="Text"
+        value={value}
+        onChange={(event) => {
+          shape[property] = event.target.value;
+          scene.update();
+          setValue(event.target.value);
+        }}
+        size="small"
+        InputProps={{
+          multiline: true,
+        }}
+      />
+    );
+  },
 };
 
 export function PropertiesView() {
