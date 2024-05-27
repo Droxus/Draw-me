@@ -21,10 +21,23 @@ export class Scene {
 
     this.canvas.width = window.innerWidth - this.canvas.offsetLeft;
     this.canvas.height = window.innerHeight - this.canvas.offsetTop;
+
+    this.resizeObserver = new ResizeObserver(() => this.resize());
+    this.resizeObserver.observe(this.canvas);
   }
 
   destroy() {
     this.clear();
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+      this.resizeObserver = null;
+    }
+  }
+
+  resize() {
+    this.canvas.width = this.canvas.clientWidth;
+    this.canvas.height = this.canvas.clientHeight;
+    this.update();
   }
 
   /**
