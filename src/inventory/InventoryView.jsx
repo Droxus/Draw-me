@@ -78,7 +78,12 @@ export function InventoryView() {
                         flexGrow={1}
                       >
                         <Stack direction="row" spacing={2} alignItems="center">
-                          <Icon />
+                          <Icon
+                            sx={{
+                              bgcolor: shape.border?.color ? shape.color : null,
+                              color: shape.border?.color ?? shape.color,
+                            }}
+                          />
                           <Stack
                             direction="column"
                             spacing={0}
