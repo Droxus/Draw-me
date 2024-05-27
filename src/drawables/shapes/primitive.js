@@ -1,5 +1,5 @@
-import { Shape } from '../shape.js';
-import { Border } from './border.js';
+import { Shape } from "../shape.js";
+import { Border } from "./border.js";
 
 /**
  *
@@ -48,7 +48,7 @@ export class Primitive extends Shape {
 
   drawBorder(ctx) {
     const { x, y } = this.position;
-    if (this.border) {
+    if (this.border && Number(this.border.width) > 0) {
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.strokeStyle = this.border.color;
       ctx.lineWidth = this.border.width;

@@ -11,7 +11,7 @@ import { useSelectedShape } from '../hooks';
 
 ["position", "rotation", "color", "border", "width", "height"];
 
-const debounce = (fn) => MUIDebounce(fn, 500);
+const debounce = (fn) => MUIDebounce(fn, 0);
 
 const PositionProperty = ({ shape, scene, property, title = "Position" }) => (
   <Stack direction="column" spacing={1}>

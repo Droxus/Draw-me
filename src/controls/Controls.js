@@ -1,7 +1,7 @@
-import { MODE } from '../constants.js';
-import { ShapeFactory } from '../drawables/factory.js';
-import { Point } from '../drawables/point.js';
-import { Scene } from '../scene/Scene.js';
+import { MODE } from "../constants.js";
+import { ShapeFactory } from "../drawables/factory.js";
+import { Point } from "../drawables/point.js";
+import { Scene } from "../scene/Scene.js";
 
 // const shapeClasses = {
 //   Rectangle: Rectangle,
@@ -35,7 +35,7 @@ export class Controls {
    */
   constructor(scene) {
     this.scene = scene;
-    this.mode = MODE.SELECT;
+    this.mode = MODE.COPY;
     this.mouseHold = false;
     this.startSelecting = undefined;
     this.sizeSelecting = {};
@@ -126,7 +126,7 @@ export class Controls {
       case MODE.MOVE:
         this.select(position);
         break;
-      case MODE.SELECT:
+      case MODE.COPY:
         if (this.readToPaste) {
           this.mouseHold = false;
           const area = {
@@ -201,7 +201,7 @@ export class Controls {
         // this.selectedShape = undefined;
         // this.fireListeners("selectedShape");
         break;
-      case MODE.SELECT:
+      case MODE.COPY:
         if (this.mouseHold) {
           this.readToPaste = true;
         }
@@ -210,7 +210,8 @@ export class Controls {
       case MODE.CREATE:
         if (this.mouseHold) {
           this.shapeCreating = undefined;
-          this.mode = MODE.SELECT;
+          this.mode = MODE.MOVE;
+          this.scene.update();
         }
         break;
 
@@ -246,7 +247,7 @@ export class Controls {
           scene.update();
         }
         break;
-      case MODE.SELECT:
+      case MODE.COPY:
         if (this.mouseHold) {
           scene.update();
 

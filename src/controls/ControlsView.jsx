@@ -151,7 +151,7 @@ export function ControlsView() {
           />
           <ControlButton
             sx={{ borderRadius: 2 }}
-            onClick={() => (controls.mode = MODE.SELECT)}
+            onClick={() => (controls.mode = MODE.COPY)}
             icon={<ContentCopyOutlined />}
             label="Copy"
           />

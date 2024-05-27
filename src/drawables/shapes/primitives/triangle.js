@@ -34,13 +34,6 @@ export class Triangle extends Primitive {
     const x3 = 0;
     const y3 = -this.height / 2;
 
-    // const x1 = 0;
-    // const y1 = this.height;
-    // const x2 = sideLength;
-    // const y2 = this.height;
-    // const x3 = sideLength / 2;
-    // const y3 = 0;
-
     ctx.beginPath();
     ctx.moveTo(x1, y1);
     ctx.lineTo(x2, y2);
@@ -52,7 +45,7 @@ export class Triangle extends Primitive {
   }
 
   drawBorder(ctx) {
-    if (this.border) {
+    if (this.border && Number(this.border.width) > 0) {
       ctx.strokeStyle = this.border.color;
       ctx.lineWidth = this.border.width;
       ctx.setLineDash(this.border.type);

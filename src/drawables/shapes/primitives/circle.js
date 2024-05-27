@@ -30,7 +30,7 @@ export class Circle extends Primitive {
   }
 
   drawBorder(ctx) {
-    if (this.border) {
+    if (this.border && Number(this.border.width) > 0) {
       ctx.strokeStyle = this.border.color;
       ctx.lineWidth = this.border.width;
       ctx.setLineDash(this.border.type);
