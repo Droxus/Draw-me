@@ -98,9 +98,9 @@ export class Scene {
    * @returns {Array}
    */
   find(position) {
-    return this.#shapes
+    return this.shapes
       .slice()
-      .sort((a, b) => b.layerIndex - a.layerIndex)
+      .reverse()
       .filter((shape) => shape.isPoint(position));
   }
 
@@ -112,9 +112,7 @@ export class Scene {
     //   await shape.draw(this.ctx);
     // });
     this.setBackgroundColor(this.#color);
-    for (const shape of this.#shapes
-      .slice()
-      .sort((a, b) => a.layerIndex - b.layerIndex)) {
+    for (const shape of this.shapes) {
       await shape.draw(this.ctx);
     }
     this.ctx.restore();
@@ -231,7 +229,7 @@ export class Scene {
    * @return {Array}
    */
   get shapes() {
-    return this.#shapes;
+    return this.#shapes.slice().sort((a, b) => a.layerIndex - b.layerIndex);
   }
 
   /**
