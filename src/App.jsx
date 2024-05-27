@@ -47,7 +47,7 @@ function App() {
           <PropertiesView />
         </Box>
         <Divider orientation="vertical" />
-        <Box component="main" flexGrow={1}>
+        <Box component="main" flexGrow={1} display="block" overflow="hidden">
           <SceneView />
         </Box>
         <Divider orientation="vertical" />
@@ -57,6 +57,7 @@ function App() {
           xs={2}
           py={4}
           px={2}
+          sx={{ display: { xs: "none", sm: "none", md: "block" } }}
         >
           <InventoryView />
         </Box>

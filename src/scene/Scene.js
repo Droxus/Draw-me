@@ -20,10 +20,9 @@ export class Scene {
     this.canvas = canvas;
     this.ctx = this.canvas.getContext("2d");
 
-    this.canvas.width = this.canvas.parentElement.clientWidth;
-    this.canvas.height = this.canvas.parentElement.clientHeight;
     this.resize = this.resize.bind(this);
-    window.addEventListener("resize", this.resize);
+    this.resizeObserver = new ResizeObserver(this.resize);
+    this.resizeObserver.observe(this.canvas.parentElement);
   }
 
   addListener(listener) {
@@ -45,12 +44,13 @@ export class Scene {
       this.resizeObserver.disconnect();
       this.resizeObserver = null;
     }
-    window.removeEventListener("resize", this.resize);
   }
 
   resize(entries) {
-    this.canvas.width = this.canvas.parentElement.clientWidth;
-    this.canvas.height = this.canvas.parentElement.clientHeight;
+    this.canvas.style.width = this.canvas.width =
+      this.canvas.parentElement.clientWidth;
+    this.canvas.style.height = this.canvas.height =
+      this.canvas.parentElement.clientHeight;
     this.update();
   }
 

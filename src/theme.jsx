@@ -2,6 +2,7 @@ import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
   app: {
+    headerHeight: 100,
     sidePanelWidth: 250,
   },
   palette: {

@@ -21,8 +21,16 @@ export function SceneView() {
     }
   }, [canvasRef]);
   return (
-    <Box component="div" width="100%" height="100%">
-      <canvas ref={setCavasRef}></canvas>
-    </Box>
+    <Box
+      component="canvas"
+      display="block"
+      width={300}
+      height={150}
+      ref={setCavasRef}
+      sx={(theme) => ({
+        height: "100%",
+        width: "100%",
+      })}
+    ></Box>
   );
 }
