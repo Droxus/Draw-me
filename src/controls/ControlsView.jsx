@@ -1,4 +1,7 @@
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  useState,
+} from 'react';
 
 import {
   AbcOutlined,
@@ -11,13 +14,19 @@ import {
   OpenWithOutlined,
   RectangleOutlined,
   RemoveOutlined,
-} from "@mui/icons-material";
-import { Divider, IconButton, Stack, styled, Typography } from "@mui/material";
+} from '@mui/icons-material';
+import {
+  Divider,
+  Stack,
+  styled,
+  Typography,
+} from '@mui/material';
 
-import { MODE } from "../constants";
-import { ShapeFactory } from "../drawables/factory";
-import { useGlobalContext } from "../GlobalContext";
-import { Controls } from "./";
+import { MODE } from '../constants';
+import { ShapeFactory } from '../drawables/factory';
+import { useGlobalContext } from '../GlobalContext';
+import { Controls } from './';
+import { ControlButton } from './ControlButton';
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -68,66 +77,34 @@ export function ControlsView() {
           alignItems="center"
           sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
         >
-          <IconButton
-            sx={{ borderRadius: 2 }}
+          <ControlButton
             onClick={() => {
               controls.createNextShapeWith(ShapeFactory.createCircle);
             }}
-          >
-            <Stack
-              direction="column"
-              justifyContent="center"
-              alignItems="center"
-            >
-              <CircleOutlined />
-              <Typography variant="caption">Circle</Typography>
-            </Stack>
-          </IconButton>
-          <IconButton
-            sx={{ borderRadius: 2 }}
+            icon={<CircleOutlined />}
+            label="Circle"
+          />
+          <ControlButton
             onClick={() => {
               controls.createNextShapeWith(ShapeFactory.createRectangle);
             }}
-          >
-            <Stack
-              direction="column"
-              justifyContent="center"
-              alignItems="center"
-            >
-              <RectangleOutlined />
-              <Typography variant="caption">Rectangle</Typography>
-            </Stack>
-          </IconButton>
-          <IconButton
-            sx={{ borderRadius: 2 }}
+            icon={<RectangleOutlined />}
+            label="Rectangle"
+          />
+          <ControlButton
             onClick={() => {
               controls.createNextShapeWith(ShapeFactory.createTriangle);
             }}
-          >
-            <Stack
-              direction="column"
-              justifyContent="center"
-              alignItems="center"
-            >
-              <ChangeHistoryOutlined />
-              <Typography variant="caption">Triangle</Typography>
-            </Stack>
-          </IconButton>
-          <IconButton
-            sx={{ borderRadius: 2 }}
+            icon={<ChangeHistoryOutlined />}
+            label="Triangle"
+          />
+          <ControlButton
             onClick={() => {
               controls.createNextShapeWith(ShapeFactory.createLine);
             }}
-          >
-            <Stack
-              direction="column"
-              justifyContent="center"
-              alignItems="center"
-            >
-              <RemoveOutlined />
-              <Typography variant="caption">Line</Typography>
-            </Stack>
-          </IconButton>
+            icon={<RemoveOutlined />}
+            label="Line"
+          />
         </Stack>
         <Typography variant="caption">Shapes</Typography>
       </Stack>
@@ -139,36 +116,22 @@ export function ControlsView() {
           alignItems="center"
           sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
         >
-          <IconButton
+          <ControlButton
             sx={{ borderRadius: 2 }}
             onClick={() => {
               controls.createNextShapeWith(ShapeFactory.createLabel);
             }}
-          >
-            <Stack
-              direction="column"
-              justifyContent="center"
-              alignItems="center"
-            >
-              <AbcOutlined />
-              <Typography variant="caption">Label</Typography>
-            </Stack>
-          </IconButton>
-          <IconButton
+            icon={<AbcOutlined />}
+            label="Label"
+          />
+          <ControlButton
             sx={{ borderRadius: 2 }}
             onClick={() => {
               controls.mode = MODE.DRAW;
             }}
-          >
-            <Stack
-              direction="column"
-              justifyContent="center"
-              alignItems="center"
-            >
-              <BrushOutlined />
-              <Typography variant="caption">Brush</Typography>
-            </Stack>
-          </IconButton>
+            icon={<BrushOutlined />}
+            label="Brush"
+          />
         </Stack>
         <Typography variant="caption">Tools</Typography>
       </Stack>
@@ -180,32 +143,18 @@ export function ControlsView() {
           alignItems="center"
           sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
         >
-          <IconButton
+          <ControlButton
             sx={{ borderRadius: 2 }}
             onClick={() => (controls.mode = MODE.MOVE)}
-          >
-            <Stack
-              direction="column"
-              justifyContent="center"
-              alignItems="center"
-            >
-              <OpenWithOutlined />
-              <Typography variant="caption">Move</Typography>
-            </Stack>
-          </IconButton>
-          <IconButton
+            icon={<OpenWithOutlined />}
+            label="Move"
+          />
+          <ControlButton
             sx={{ borderRadius: 2 }}
             onClick={() => (controls.mode = MODE.SELECT)}
-          >
-            <Stack
-              direction="column"
-              justifyContent="center"
-              alignItems="center"
-            >
-              <ContentCopyOutlined />
-              <Typography variant="caption">Copy</Typography>
-            </Stack>
-          </IconButton>
+            icon={<ContentCopyOutlined />}
+            label="Copy"
+          />
         </Stack>
         <Typography variant="caption">Selection</Typography>
       </Stack>
@@ -217,40 +166,26 @@ export function ControlsView() {
           alignItems="center"
           sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
         >
-          <IconButton
+          <ControlButton
             sx={{ borderRadius: 2 }}
             onClick={() => {
               importRef.click();
             }}
-          >
-            <Stack
-              direction="column"
-              justifyContent="center"
-              alignItems="center"
-            >
-              <FileUploadOutlined />
-              <Typography variant="caption">Import</Typography>
-            </Stack>
-            <VisuallyHiddenInput
-              type="file"
-              ref={setImportRef}
-              onChange={importFile}
-              accept="image/*"
-            />
-          </IconButton>
-          <IconButton
+            icon={<FileUploadOutlined />}
+            label="Import"
+          />
+          <ControlButton
             sx={{ borderRadius: 2 }}
             onClick={() => scene.export(`draw_me-${new Date().getTime()}.png`)}
-          >
-            <Stack
-              direction="column"
-              justifyContent="center"
-              alignItems="center"
-            >
-              <FileDownloadOutlined />
-              <Typography variant="caption">Export</Typography>
-            </Stack>
-          </IconButton>
+            icon={<FileDownloadOutlined />}
+            label="Export"
+          />
+          <VisuallyHiddenInput
+            type="file"
+            ref={setImportRef}
+            onChange={importFile}
+            accept="image/*"
+          />
         </Stack>
         <Typography variant="caption">Image</Typography>
       </Stack>
