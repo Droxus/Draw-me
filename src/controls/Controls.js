@@ -58,11 +58,12 @@ export class Controls {
   onSceneChange(event, scene) {
     if (event.type == "updated") {
       if (event.key == "added") {
-        this.selectedShape = event.shape;
+        this.selectedShape = event.shapes[event.shapes.length - 1];
         this.fireListeners("selectedShape");
       }
       if (event.key == "removed") {
-        if (event.shape?.id == this.selectedShape?.id) {
+        if (event.shapes.some((shape) => shape.id == this.selectedShape?.id)) {
+          console.log("selected shape removed");
           this.selectedShape = null;
           this.fireListeners("selectedShape");
         }

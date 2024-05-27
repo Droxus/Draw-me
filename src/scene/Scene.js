@@ -69,25 +69,26 @@ export class Scene {
   /**
    * @param {Shape} newShape
    */
-  add(newShape) {
-    this.#shapes.push(newShape);
-    this.fireListeners({ type: "added", key: "shapes", shape: newShape });
+  add(...newShapes) {
+    this.#shapes.push(...newShapes);
+    this.fireListeners({ type: "added", key: "shapes", shapes: newShapes });
   }
 
   /**
    * @param {Number} id
    */
-  remove(id) {
-    let removed = null;
+  remove(...oldShapes) {
+    let removed = [];
     this.#shapes = this.#shapes.filter((shape) => {
-      if (shape.id == id) {
-        removed = shape;
+      if (oldShapes.some((oldShape) => oldShape.id == shape.id)) {
+        removed.push(shape);
+        return false;
       }
-      return shape.id !== id;
+      return true;
     });
-    if (!removed) return;
+    if (removed.length < 1) return;
     this.fireListeners(
-      { type: "removed", key: "shapes", shape: removed },
+      { type: "removed", key: "shapes", shapes: removed },
       this
     );
   }
@@ -108,7 +109,9 @@ export class Scene {
     //   await shape.draw(this.ctx);
     // });
     this.setBackgroundColor(this.#color);
-    for (const shape of this.#shapes) {
+    for (const shape of this.#shapes
+      .slice()
+      .sort((a, b) => a.layerIndex - b.layerIndex)) {
       await shape.draw(this.ctx);
     }
     this.ctx.restore();

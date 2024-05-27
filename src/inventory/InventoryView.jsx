@@ -35,61 +35,64 @@ export function InventoryView() {
         <Typography fontStyle="italic">Scene is empty</Typography>
       )}
       <List>
-        {shapes.map((shape) => {
-          const type = shape.type.toLowerCase();
-          const Icon = type.includes("circle")
-            ? CircleOutlined
-            : type.includes("rectangle")
-            ? RectangleOutlined
-            : type.includes("triangle")
-            ? ChangeHistoryOutlined
-            : type.includes("line")
-            ? RemoveOutlined
-            : type.includes("label")
-            ? AbcOutlined
-            : type.includes("picture")
-            ? ImageOutlined
-            : Fragment;
-          return (
-            <ListItem
-              key={shape.id}
-              disablePadding
-              action={
-                <IconButton
-                  edge="end"
-                  aria-label="move"
-                  onClick={console.debug}
-                >
-                  <ArrowUpwardOutlined />
-                </IconButton>
-              }
-              secondaryAction={
-                <IconButton
-                  edge="end"
-                  aria-label="delete"
-                  onClick={() => {
-                    scene.remove(shape.id);
-                    scene.update();
-                  }}
-                >
-                  <DeleteOutline />
-                </IconButton>
-              }
-            >
-              <ListItemButton
-                selected={
-                  !!selectedShape && !!shape && selectedShape.id == shape.id
+        {shapes
+          .slice()
+          .sort((a, b) => b.layerIndex - a.layerIndex)
+          .map((shape) => {
+            const type = shape.type.toLowerCase();
+            const Icon = type.includes("circle")
+              ? CircleOutlined
+              : type.includes("rectangle")
+              ? RectangleOutlined
+              : type.includes("triangle")
+              ? ChangeHistoryOutlined
+              : type.includes("line")
+              ? RemoveOutlined
+              : type.includes("label")
+              ? AbcOutlined
+              : type.includes("picture")
+              ? ImageOutlined
+              : Fragment;
+            return (
+              <ListItem
+                key={shape.id}
+                disablePadding
+                action={
+                  <IconButton
+                    edge="end"
+                    aria-label="move"
+                    onClick={console.debug}
+                  >
+                    <ArrowUpwardOutlined />
+                  </IconButton>
                 }
-                onClick={() => controls.select(shape.position)}
+                secondaryAction={
+                  <IconButton
+                    edge="end"
+                    aria-label="delete"
+                    onClick={() => {
+                      scene.remove(shape);
+                      scene.update();
+                    }}
+                  >
+                    <DeleteOutline />
+                  </IconButton>
+                }
               >
-                <ListItemIcon>
-                  <Icon />
-                </ListItemIcon>
-                <Typography variant="span">{shape.name}</Typography>
-              </ListItemButton>
-            </ListItem>
-          );
-        })}
+                <ListItemButton
+                  selected={
+                    !!selectedShape && !!shape && selectedShape.id == shape.id
+                  }
+                  onClick={() => controls.select(shape.position)}
+                >
+                  <ListItemIcon>
+                    <Icon />
+                  </ListItemIcon>
+                  <Typography variant="span">{shape.name}</Typography>
+                </ListItemButton>
+              </ListItem>
+            );
+          })}
       </List>
     </Stack>
   );

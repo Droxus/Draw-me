@@ -10,7 +10,8 @@
  */
 
 export class Shape {
-  #layerIndex;
+  static layerIndexCounter = 0;
+  #layerIndex = Shape.layerIndexCounter++;
 
   constructor() {
     this.id = Shape.#idGenerator.next().value;
