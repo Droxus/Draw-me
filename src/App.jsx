@@ -1,78 +1,53 @@
-import "./App.css";
-
-import * as React from "react";
-import { useState } from "react";
+import './App.css';
 
 import {
+  Box,
   Divider,
   Stack,
-  TextField,
-  ThemeProvider,
   Typography,
-} from "@mui/material";
-import Grid from "@mui/material/Unstable_Grid2/Grid2";
+} from '@mui/material';
 
-import { ControlsView } from "./controls";
-import { GlobalContext } from "./GlobalContext";
-import { SceneView } from "./scene/SceneView";
-import theme from "./theme";
+import { ControlsView } from './controls';
+import { InventoryView } from './inventory/InventoryView';
+import { PropertiesView } from './properties/PropertiesView';
+import { SceneView } from './scene/SceneView';
 
 function App() {
-  const [selected, setSelected] = useState(false);
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalContext>
-        <Stack direction="column" width="100%" height="100%">
-          <Stack
-            component="header"
-            direction="row"
-            alignItems="center"
-            spacing={1}
+    <Stack direction="column" width="100%" height="100%">
+      <Stack component="header" direction="row" alignItems="center" spacing={1}>
+        <Stack
+          direction="column"
+          justifyContent="center"
+          alignItems="center"
+          px={1}
+        >
+          <Typography
+            variant="h1"
+            fontSize={32}
+            fontWeight="bold"
+            sx={{ display: { xs: "none", sm: "block" } }}
           >
-            <Stack
-              direction="column"
-              justifyContent="center"
-              alignItems="center"
-              px={1}
-            >
-              <Typography
-                variant="h1"
-                fontSize={32}
-                sx={{ display: { xs: "none", sm: "block" } }}
-              >
-                DRAW ME
-              </Typography>
-            </Stack>
-            <ControlsView />
-          </Stack>
-          <Divider orientation="horizontal" />
-          <Grid container flexGrow={1} spacing={2}>
-            <Grid
-              component="aside"
-              xs={2}
-              py={4}
-              px={2}
-              display={selected ? "auto" : "none"}
-            >
-              <Stack direction="column" spacing={2}>
-                <Typography variant="h6">
-                  %selected shape% Properties
-                </Typography>
-                <TextField
-                  label="Width"
-                  id="outlined-size-small"
-                  defaultValue="Small"
-                  size="small"
-                />
-              </Stack>
-            </Grid>
-            <Grid component="main" flexGrow={1}>
-              <SceneView />
-            </Grid>
-          </Grid>
+            DRAW ME
+          </Typography>
         </Stack>
-      </GlobalContext>
-    </ThemeProvider>
+        <ControlsView />
+      </Stack>
+      <Divider orientation="horizontal" />
+      <Stack direction="row">
+        <Box component="aside" width={200} xs={2} py={4} px={2}>
+          <PropertiesView />
+        </Box>
+        <Divider orientation="vertical" />
+        <Box component="main" flexGrow={1}>
+          <SceneView />
+        </Box>
+        <Divider orientation="vertical" />
+        <Box component="aside" width={200} xs={2} py={4} px={2}>
+          <InventoryView />
+        </Box>
+      </Stack>
+    </Stack>
   );
 }
 

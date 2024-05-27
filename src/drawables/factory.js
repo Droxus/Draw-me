@@ -1,17 +1,17 @@
-import { Point } from "./point";
-import { Border } from "./shapes/border";
-import { Brush } from "./shapes/brush";
-import { Circle } from "./shapes/primitives/circle";
-import { Label } from "./shapes/primitives/label";
-import { Line } from "./shapes/primitives/line";
-import { Picture } from "./shapes/primitives/picture";
-import { Rectangle } from "./shapes/primitives/rectangle";
-import { Triangle } from "./shapes/primitives/triangle";
+import { Point } from './point';
+import { Border } from './shapes/border';
+import { Brush } from './shapes/brush';
+import { Circle } from './shapes/primitives/circle';
+import { Label } from './shapes/primitives/label';
+import { Line } from './shapes/primitives/line';
+import { Picture } from './shapes/primitives/picture';
+import { Rectangle } from './shapes/primitives/rectangle';
+import { Triangle } from './shapes/primitives/triangle';
 
 export class ShapeFactory {
   static async createImage({ x, y, path }) {
     const position = new Point(x, y);
-    const border = new Border({ color: "red", width: 2, type: [] });
+    const border = new Border({ color: "#ff0000", width: 2, type: [] });
     const picture = new Picture(path, {
       position: position,
       rotation: 0,
@@ -25,11 +25,11 @@ export class ShapeFactory {
 
   static createCircle({ x, y }) {
     const position = new Point(x, y);
-    const border = new Border({ color: "blue", width: 2, type: [] });
+    const border = new Border({ color: "#0000ff", width: 2, type: [] });
     const circle = new Circle({
       position: position,
       rotation: 0,
-      color: "orange",
+      color: "#FFA500",
       width: 100,
       height: 100,
       border: border,
@@ -40,7 +40,7 @@ export class ShapeFactory {
 
   static createLabel({ x, y }) {
     const position = new Point(x, y);
-    const border = new Border({ color: "blue", width: 2, type: [] });
+    const border = new Border({ color: "#0000ff", width: 2, type: [] });
     const label = new Label("Hello, World!", {
       position: position,
       rotation: 0,
@@ -54,7 +54,7 @@ export class ShapeFactory {
   }
   static createRectangle({ x, y }) {
     const position = new Point(x, y);
-    const border = new Border({ color: "green", width: 2, type: [] });
+    const border = new Border({ color: "#00ff00", width: 2, type: [] });
     const rectangle = new Rectangle({
       position: position,
       rotation: 0,
@@ -80,11 +80,11 @@ export class ShapeFactory {
 
   static createTriangle({ x, y }) {
     const position = new Point(x, y);
-    const border = new Border({ color: "blue", width: 2, type: [] });
+    const border = new Border({ color: "#0000ff", width: 2, type: [] });
     const triangle = new Triangle({
       position: position,
       rotation: 0,
-      color: "orange",
+      color: "#FFA500",
       width: 100,
       height: 100,
       border: border,

@@ -1,4 +1,4 @@
-import { Primitive } from "../primitive.js";
+import { Primitive } from '../primitive.js';
 
 /**
  *
@@ -63,5 +63,9 @@ export class Picture extends Primitive {
    */
   get source() {
     return this.source;
+  }
+
+  getProperties() {
+    return super.getProperties().filter((property) => property !== "color");
   }
 }

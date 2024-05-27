@@ -11,7 +11,8 @@
 
 export class Scene {
   #shapes = [];
-  #color = "white";
+  #color = "#ffffff";
+  listeners = new Set();
 
   constructor(canvas) {
     this.id = this.#generateId().next().value;
@@ -22,8 +23,21 @@ export class Scene {
     this.canvas.width = window.innerWidth - this.canvas.offsetLeft;
     this.canvas.height = window.innerHeight - this.canvas.offsetTop;
 
-    this.resizeObserver = new ResizeObserver(() => this.resize());
-    this.resizeObserver.observe(this.canvas);
+    // this.resizeObserver = new ResizeObserver(() => this.resize());
+    // this.resizeObserver.observe(this.canvas);
+  }
+
+  addListener(listener) {
+    this.listeners.add(listener);
+  }
+  removeListener(listener) {
+    this.listeners.delete(listener);
+  }
+
+  fireListeners({ type, ...rest }) {
+    this.listeners.forEach((callback) =>
+      callback({ type: type || "updated", ...rest }, this)
+    );
   }
 
   destroy() {
@@ -57,13 +71,25 @@ export class Scene {
    */
   add(newShape) {
     this.#shapes.push(newShape);
+    this.fireListeners({ type: "added", key: "shapes", shape: newShape });
   }
 
   /**
    * @param {Number} id
    */
   remove(id) {
-    this.#shapes = this.#shapes.filter((shape) => shape.id !== id);
+    let removed = null;
+    this.#shapes = this.#shapes.filter((shape) => {
+      if (shape.id == id) {
+        removed = shape;
+      }
+      return shape.id !== id;
+    });
+    if (!removed) return;
+    this.fireListeners(
+      { type: "removed", key: "shapes", shape: removed },
+      this
+    );
   }
 
   /**
@@ -201,5 +227,13 @@ export class Scene {
    */
   set color(value) {
     this.#color = value;
+  }
+
+  get name() {
+    return "Scene";
+  }
+
+  getProperties() {
+    return ["color"];
   }
 }

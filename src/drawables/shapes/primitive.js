@@ -1,5 +1,5 @@
-import { Shape } from "../shape.js";
-import { Border } from "./border.js";
+import { Shape } from '../shape.js';
+import { Border } from './border.js';
 
 /**
  *
@@ -253,5 +253,9 @@ export class Primitive extends Shape {
    */
   set height(newHeight) {
     this.height = newHeight;
+  }
+
+  getProperties() {
+    return ["width", "height", "position", "rotation", "color", "border"];
   }
 }

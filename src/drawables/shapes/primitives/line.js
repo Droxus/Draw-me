@@ -1,4 +1,4 @@
-import { Primitive } from "../primitive.js";
+import { Primitive } from '../primitive.js';
 
 /**
  *
@@ -69,5 +69,9 @@ export class Line extends Primitive {
    */
   set endPoint(newEndPoint) {
     this.endPoint = newEndPoint;
+  }
+
+  getProperties() {
+    return ["startPoint", "endPoint", "rotation", "color"];
   }
 }

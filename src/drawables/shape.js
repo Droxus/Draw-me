@@ -19,6 +19,14 @@ export class Shape {
     }
   }
 
+  get type() {
+    return this.constructor.name;
+  }
+
+  get name() {
+    return `${this.constructor.name} ${this.id}`;
+  }
+
   /**
    * @return {number}
    */

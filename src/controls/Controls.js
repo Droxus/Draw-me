@@ -1,7 +1,7 @@
-import { MODE } from "../constants.js";
-import { ShapeFactory } from "../drawables/factory.js";
-import { Point } from "../drawables/point.js";
-import { Scene } from "../scene/Scene.js";
+import { MODE } from '../constants.js';
+import { ShapeFactory } from '../drawables/factory.js';
+import { Point } from '../drawables/point.js';
+import { Scene } from '../scene/Scene.js';
 
 // const shapeClasses = {
 //   Rectangle: Rectangle,
@@ -27,6 +27,8 @@ export class Controls {
 
   mode;
 
+  listeners = new Set();
+
   /**
    *
    * @param {Scene} scene
@@ -44,13 +46,50 @@ export class Controls {
     this.onMouseDown = this.onMouseDown.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
+    this.onSceneChange = this.onSceneChange.bind(this);
+
+    this.scene.addListener(this.onSceneChange);
 
     this.scene.canvas.addEventListener("mousedown", this.onMouseDown);
     this.scene.canvas.addEventListener("mouseup", this.onMouseUp);
     this.scene.canvas.addEventListener("mousemove", this.onMouseMove);
   }
 
+  onSceneChange(event, scene) {
+    if (event.type == "updated") {
+      if (event.key == "added") {
+        this.selectedShape = event.shape;
+        this.fireListeners("selectedShape");
+      }
+      if (event.key == "removed") {
+        if (event.shape?.id == this.selectedShape?.id) {
+          this.selectedShape = null;
+          this.fireListeners("selectedShape");
+        }
+      }
+    }
+    if (event.type == "destroy") {
+      setShape(null);
+    }
+  }
+
+  addListener(listener) {
+    this.listeners.add(listener);
+  }
+  removeListener(listener) {
+    this.listeners.delete(listener);
+  }
+
+  fireListeners(key) {
+    this.listeners.forEach((callback) =>
+      callback({ type: "updated", key }, this)
+    );
+  }
+
   destroy() {
+    this.listeners.forEach((listener) =>
+      listener.onChange({ type: "destroyed" }, this)
+    );
     if (this.scene) {
       this.scene.canvas.removeEventListener("mousedown", this.onMouseDown);
       this.scene.canvas.removeEventListener("mouseup", this.onMouseUp);
@@ -65,10 +104,18 @@ export class Controls {
     this.createShape = producer;
   }
 
+  select(position) {
+    const foundShapes = this.scene.find(position);
+    this.selectedShape = foundShapes[0];
+    this.fireListeners("selectedShape");
+    return this.selectedShape;
+  }
+
   async onMouseDown(event) {
     const { offsetX, offsetY } = event;
     const position = new Point(offsetX, offsetY);
     const scene = this.scene;
+    this.selectedShape = undefined;
 
     this.mouseHold = true;
     switch (this.mode) {
@@ -76,8 +123,7 @@ export class Controls {
         this.startBrushDrawing(position);
         break;
       case MODE.MOVE:
-        const foundShapes = scene.find(position);
-        this.selectedShape = foundShapes[0];
+        this.select(position);
         break;
       case MODE.SELECT:
         if (this.readToPaste) {
@@ -151,7 +197,8 @@ export class Controls {
         this.stopBrushDrawing();
         break;
       case MODE.MOVE:
-        this.selectedShape = undefined;
+        // this.selectedShape = undefined;
+        // this.fireListeners("selectedShape");
         break;
       case MODE.SELECT:
         if (this.mouseHold) {
