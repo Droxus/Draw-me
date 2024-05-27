@@ -208,6 +208,7 @@ export class Scene {
   }
 
   setBackgroundColor(color) {
+    this.ctx.setTransform(1, 0, 0, 1, 0, 0);
     this.ctx.fillStyle = color;
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
   }
