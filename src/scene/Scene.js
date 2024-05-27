@@ -98,7 +98,10 @@ export class Scene {
    * @returns {Array}
    */
   find(position) {
-    return this.#shapes.filter((shape) => shape.isPoint(position));
+    return this.#shapes
+      .slice()
+      .sort((a, b) => b.layerIndex - a.layerIndex)
+      .filter((shape) => shape.isPoint(position));
   }
 
   async update() {
@@ -115,6 +118,11 @@ export class Scene {
       await shape.draw(this.ctx);
     }
     this.ctx.restore();
+    this.fireListeners({
+      type: "updated",
+      key: "shapes",
+      shapes: this.#shapes,
+    });
   }
 
   clear() {
