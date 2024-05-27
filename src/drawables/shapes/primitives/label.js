@@ -50,4 +50,8 @@ export class Label extends Primitive {
   set text(newText) {
     this.text = newText;
   }
+
+  getProperties() {
+    return ["text"].concat(super.getProperties());
+  }
 }

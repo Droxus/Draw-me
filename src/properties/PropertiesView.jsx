@@ -26,7 +26,7 @@ const PositionProperty = ({ shape, scene, property, title = "Position" }) => (
         })}
         size="small"
         InputProps={{
-          endAdornment: <InputAdornment position="start">px</InputAdornment>,
+          endAdornment: <InputAdornment position="end">px</InputAdornment>,
         }}
       />
       <TextField
@@ -38,7 +38,7 @@ const PositionProperty = ({ shape, scene, property, title = "Position" }) => (
         })}
         size="small"
         InputProps={{
-          endAdornment: <InputAdornment position="start">px</InputAdornment>,
+          endAdornment: <InputAdornment position="end">px</InputAdornment>,
         }}
       />
     </Stack>
@@ -95,6 +95,7 @@ const RendererByProperty = {
         />
         <TextField
           label="Thickness"
+          type="number"
           defaultValue={shape.border.width}
           onChange={debounce((event) => {
             shape.border.width = event.target.value;
@@ -126,6 +127,7 @@ const RendererByProperty = {
   height: ({ shape, scene, property }) => (
     <TextField
       label="Height"
+      type="number"
       defaultValue={shape.height}
       onChange={debounce((event) => {
         shape.height =
@@ -136,6 +138,17 @@ const RendererByProperty = {
       InputProps={{
         endAdornment: <InputAdornment position="start">px</InputAdornment>,
       }}
+    />
+  ),
+  text: ({ shape, scene, property }) => (
+    <TextField
+      label="Text"
+      defaultValue={shape[property]}
+      onChange={debounce((event) => {
+        shape[property] = event.target.value;
+        scene.update();
+      })}
+      size="small"
     />
   ),
 };
