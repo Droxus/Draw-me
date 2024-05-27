@@ -80,8 +80,16 @@ export function InventoryView() {
                         <Stack direction="row" spacing={2} alignItems="center">
                           <Icon
                             sx={{
-                              bgcolor: shape.border?.color ? shape.color : null,
-                              color: shape.border?.color ?? shape.color,
+                              bgcolor:
+                                type == "label"
+                                  ? shape.border?.color
+                                  : shape.border?.color
+                                  ? shape.color
+                                  : null,
+                              color:
+                                type === "label"
+                                  ? shape.color
+                                  : shape.border?.color ?? shape.color,
                             }}
                           />
                           <Stack
