@@ -4,6 +4,7 @@ import {
   AbcOutlined,
   ArrowDownwardOutlined,
   ArrowUpwardOutlined,
+  BrushOutlined,
   ChangeHistoryOutlined,
   CircleOutlined,
   DeleteOutline,
@@ -53,6 +54,8 @@ export function InventoryView() {
               ? AbcOutlined
               : type.includes("picture")
               ? ImageOutlined
+              : type.includes("brush")
+              ? BrushOutlined
               : Fragment;
             return (
               <Fragment key={shape.id}>
