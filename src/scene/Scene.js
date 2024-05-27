@@ -13,14 +13,18 @@ export class Scene {
   #shapes = [];
   #color = "white";
 
-  constructor() {
+  constructor(canvas) {
     this.id = this.#generateId().next().value;
 
-    this.canvas = document.getElementById("mainCanvas");
+    this.canvas = canvas;
     this.ctx = this.canvas.getContext("2d");
 
     this.canvas.width = window.innerWidth - this.canvas.offsetLeft;
     this.canvas.height = window.innerHeight - this.canvas.offsetTop;
+  }
+
+  destroy() {
+    this.clear();
   }
 
   /**

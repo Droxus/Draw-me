@@ -48,7 +48,7 @@ export class Brush extends Shape {
   }
 
   isPoint({ x, y }) {
-    return tracePoints.find(({ _x, _y }) => x == _x && y == _y);
+    return this.tracePoints.find(({ _x, _y }) => x == _x && y == _y);
   }
 
   /**
