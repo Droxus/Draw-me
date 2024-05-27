@@ -278,10 +278,16 @@ export class Controls {
           };
           this.shapeCreating.width = Math.abs(area.width);
           this.shapeCreating.height = Math.abs(area.height);
+          const { x, y } = this.shapeCreating.position;
           this.shapeCreating.position.x =
             this.startSelecting.x + area.width / 2;
           this.shapeCreating.position.y =
             this.startSelecting.y + area.height / 2;
+          if (this.shapeCreating.endPoint) {
+            this.shapeCreating.position = { x, y };
+            this.shapeCreating.endPoint.x = position.x;
+            this.shapeCreating.endPoint.y = position.y;
+          }
           scene.selectArea(area);
         }
         break;
