@@ -1,4 +1,4 @@
-import { Primitive } from "../primitive.js";
+import { Primitive } from '../primitive.js';
 
 /**
  *
@@ -28,11 +28,20 @@ export class Label extends Primitive {
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
 
-    const width = this.width || ctx.measureText(this.text).width;
-    const height = this.height || parseInt(ctx.font, 10);
+    const lines = this.text.split("\n");
+    const longestLineWidth = lines
+      .map((line) => ctx.measureText(line).width)
+      .sort((a, b) => a - b)
+      .pop();
+    const lineHeight = parseInt(ctx.font, 10);
+    this.width = Math.max(this.width, longestLineWidth);
+    const textHeight = lineHeight * lines.length;
+    this.height = Math.max(this.height, textHeight);
     ctx.translate(x, y);
     ctx.rotate(this.rotation);
-    ctx.fillText(this.text, 0, 0);
+    lines.forEach((line, i) => {
+      ctx.fillText(line, 0, 0 - textHeight / 2 + lineHeight * i);
+    });
 
     this.drawBorder(ctx);
   }

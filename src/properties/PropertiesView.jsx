@@ -145,10 +145,14 @@ const RendererByProperty = {
       label="Text"
       defaultValue={shape[property]}
       onChange={debounce((event) => {
+        console.debug("Setting text: %o", event.target.value);
         shape[property] = event.target.value;
         scene.update();
       })}
       size="small"
+      InputProps={{
+        multiline: true,
+      }}
     />
   ),
 };
