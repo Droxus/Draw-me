@@ -12,6 +12,7 @@ import {
   RemoveOutlined,
 } from '@mui/icons-material';
 import {
+  Divider,
   IconButton,
   List,
   ListItem,
@@ -54,53 +55,79 @@ export function InventoryView() {
               ? ImageOutlined
               : Fragment;
             return (
-              <ListItem key={shape.id} disablePadding disableGutters>
-                <ListItemButton
-                  selected={
-                    !!selectedShape && !!shape && selectedShape.id == shape.id
-                  }
-                  onClick={() => controls.select(shape.position)}
-                >
-                  <Stack direction="column" spacing={0} alignItems="center">
-                    <Stack direction="row" spacing={2} alignItems="center">
-                      <Icon />
-                      <Typography variant="span">{shape.name}</Typography>
+              <Fragment key={shape.id}>
+                <ListItem disablePadding disableGutters>
+                  <ListItemButton
+                    disableGutters
+                    selected={
+                      !!selectedShape && !!shape && selectedShape.id == shape.id
+                    }
+                    onClick={() => controls.select(shape.position)}
+                  >
+                    <Stack
+                      direction="column"
+                      spacing={0}
+                      alignItems="center"
+                      flexGrow={1}
+                    >
+                      <Stack direction="row" spacing={2} alignItems="center">
+                        <Icon />
+                        <Stack
+                          direction="column"
+                          spacing={0}
+                          justifyContent="center"
+                          alignItems="start"
+                        >
+                          <Typography variant="subtitle2">
+                            {shape.type}
+                          </Typography>
+                          <Typography variant="caption" fontStyle="italic">
+                            {shape.id}
+                          </Typography>
+                        </Stack>
+                      </Stack>
+                      <Stack
+                        direction="row"
+                        spacing={0}
+                        justifyContent="center"
+                      >
+                        <IconButton
+                          aria-label="move forward"
+                          disabled={index === 0}
+                          onClick={() => {
+                            shape.layerIndex = theseShapes[0].layerIndex + 1;
+                            scene.update();
+                          }}
+                        >
+                          <ArrowUpwardOutlined />
+                        </IconButton>
+                        <IconButton
+                          disabled={index === theseShapes.length - 1}
+                          aria-label="move backward"
+                          onClick={() => {
+                            shape.layerIndex =
+                              theseShapes[theseShapes.length - 1].layerIndex -
+                              1;
+                            scene.update();
+                          }}
+                        >
+                          <ArrowDownwardOutlined />
+                        </IconButton>
+                        <IconButton
+                          aria-label="delete"
+                          onClick={() => {
+                            scene.remove(shape);
+                            scene.update();
+                          }}
+                        >
+                          <DeleteOutline />
+                        </IconButton>
+                      </Stack>
                     </Stack>
-                    <Stack direction="row" spacing={0}>
-                      <IconButton
-                        aria-label="move forward"
-                        disabled={index === 0}
-                        onClick={() => {
-                          shape.layerIndex = theseShapes[0].layerIndex + 1;
-                          scene.update();
-                        }}
-                      >
-                        <ArrowUpwardOutlined />
-                      </IconButton>
-                      <IconButton
-                        disabled={index === theseShapes.length - 1}
-                        aria-label="move backward"
-                        onClick={() => {
-                          shape.layerIndex =
-                            theseShapes[theseShapes.length - 1].layerIndex - 1;
-                          scene.update();
-                        }}
-                      >
-                        <ArrowDownwardOutlined />
-                      </IconButton>
-                      <IconButton
-                        aria-label="delete"
-                        onClick={() => {
-                          scene.remove(shape);
-                          scene.update();
-                        }}
-                      >
-                        <DeleteOutline />
-                      </IconButton>
-                    </Stack>
-                  </Stack>
-                </ListItemButton>
-              </ListItem>
+                  </ListItemButton>
+                </ListItem>
+                <Divider flexItem orientation="horizontal" />
+              </Fragment>
             );
           })}
       </List>
