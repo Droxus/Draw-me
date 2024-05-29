@@ -101,7 +101,7 @@ export class Scene {
     return this.shapes
       .slice()
       .reverse()
-      .filter((shape) => shape.isPoint(position));
+      .filter((shape) => shape.isPoint(position, this.ctx));
   }
 
   async update() {

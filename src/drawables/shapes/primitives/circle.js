@@ -19,6 +19,7 @@ export class Circle extends Primitive {
     const { x, y } = this.position;
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.translate(x, y);
+    ctx.rotate(this.rotation);
 
     ctx.fillStyle = this.color;
     ctx.beginPath();
@@ -35,6 +36,7 @@ export class Circle extends Primitive {
       ctx.lineWidth = this.border.width;
       ctx.setLineDash(this.border.type);
       ctx.stroke();
+      ctx.rotate(this.rotation);
     }
   }
 }

@@ -36,7 +36,7 @@ function App() {
         <ControlsView />
       </Stack>
       <Divider orientation="horizontal" />
-      <Stack direction="row" flexGrow={1}>
+      <Stack direction="row" flexGrow={1} height={"100%"}>
         <Box
           component="aside"
           width={theme.app.sidePanelWidth}

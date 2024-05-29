@@ -32,12 +32,12 @@ export function InventoryView() {
   const selectedShape = useSelectedShape();
   const shapes = useShapes();
   return (
-    <Stack direction="column" spacing={1}>
+    <Stack direction="column" spacing={1} height={"90%"} overflow={"scroll"}>
       <Typography variant="h6">Inventory list</Typography>
       {shapes.length === 0 && (
         <Typography fontStyle="italic">Scene is empty</Typography>
       )}
-      <List>
+      <List height={"90%"} overflow={"scroll"}>
         {shapes
           .slice()
           .reverse()
@@ -59,7 +59,7 @@ export function InventoryView() {
               ? BrushOutlined
               : Fragment;
             return (
-              <Fragment key={shape.id}>
+              <Fragment key={shape.id} >
                 <Zoom in>
                   <ListItem disableGutters>
                     <ListItemButton

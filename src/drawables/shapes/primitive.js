@@ -64,9 +64,18 @@ export class Primitive extends Shape {
     }
   }
 
-  isPoint({ x, y }) {
+  isPoint({ x, y }, ctx) {
+    console.log("hek");
     const corners = this.getRotatedRectangleCorners();
     const bbox = this.getBoundingBox(corners);
+
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+    ctx.fillStyle = "black";
+
+    ctx.translate(bbox.x, bbox.y);
+    ctx.rotate(0);
+    ctx.fillRect(-bbox.width / 2, -bbox.height / 2, bbox.width, bbox.height);
 
     return (
       x >= bbox.x - bbox.width / 2 &&
@@ -114,15 +123,15 @@ export class Primitive extends Shape {
     const width = maxX - minX;
     const height = maxY - minY;
 
-    const xBboxDiff = this.width - width;
-    const yBboxDiff = this.height - height;
+    const xBboxDiff = Math.abs(this.width - width);
+    const yBboxDiff = Math.abs(this.height - height);
 
     let xPos = minX - xBboxDiff / 2;
     let yPos = minY - yBboxDiff / 2;
 
     if (this.endPoint) {
-      xPos += width / 2;
-      yPos += height / 2;
+      xPos += (this.endPoint.x - this.position.x) / 2;
+      yPos += (this.endPoint.y - this.position.y) / 2;
     }
 
     return {
