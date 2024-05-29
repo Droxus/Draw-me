@@ -1,4 +1,4 @@
-import { Shape } from '../shape.js';
+import { Shape } from "../shape.js";
 
 /**
  *
@@ -30,6 +30,8 @@ export class Brush extends Shape {
     ctx.setLineDash([]);
     ctx.lineWidth = this.width;
     ctx.strokeStyle = this.color;
+
+    ctx.lineCap = "round";
 
     ctx.beginPath();
     for (let i = 1; i < this.#tracePoints.length; i++) {
