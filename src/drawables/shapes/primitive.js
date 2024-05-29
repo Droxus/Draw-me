@@ -71,12 +71,6 @@ export class Primitive extends Shape {
 
     ctx.setTransform(1, 0, 0, 1, 0, 0);
 
-    ctx.fillStyle = "black";
-
-    ctx.translate(bbox.x, bbox.y);
-    ctx.rotate(0);
-    ctx.fillRect(-bbox.width / 2, -bbox.height / 2, bbox.width, bbox.height);
-
     return (
       x >= bbox.x - bbox.width / 2 &&
       x <= bbox.x + bbox.width / 2 &&

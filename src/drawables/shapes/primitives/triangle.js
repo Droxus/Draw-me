@@ -24,12 +24,9 @@ export class Triangle extends Primitive {
     ctx.translate(x, y);
     ctx.rotate(this.rotation);
 
-    const sideLength =
-      Math.sqrt(this.height ** 2 + this.width ** 2) / Math.sqrt(2);
-
-    const x1 = -sideLength / 2;
+    const x1 = -this.width / 2;
     const y1 = this.height / 2;
-    const x2 = sideLength / 2;
+    const x2 = this.width / 2;
     const y2 = this.height / 2;
     const x3 = 0;
     const y3 = -this.height / 2;
