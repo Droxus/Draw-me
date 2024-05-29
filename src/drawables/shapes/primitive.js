@@ -115,23 +115,51 @@ export class Primitive extends Shape {
     const xValues = corners.map((point) => point.x);
     const yValues = corners.map((point) => point.y);
 
-    const minX = Math.min(...xValues);
-    const maxX = Math.max(...xValues);
-    const minY = Math.min(...yValues);
-    const maxY = Math.max(...yValues);
+    let minX = Math.min(...xValues);
+    let maxX = Math.max(...xValues);
+    let minY = Math.min(...yValues);
+    let maxY = Math.max(...yValues);
 
     const width = maxX - minX;
     const height = maxY - minY;
 
-    const xBboxDiff = Math.abs(this.width - width);
-    const yBboxDiff = Math.abs(this.height - height);
+    const xBboxDiff = this.width - width;
+    const yBboxDiff = this.height - height;
 
-    let xPos = minX - xBboxDiff / 2;
-    let yPos = minY - yBboxDiff / 2;
+    let xPos = 0;
+    let yPos = 0;
 
     if (this.endPoint) {
-      xPos += (this.endPoint.x - this.position.x) / 2;
-      yPos += (this.endPoint.y - this.position.y) / 2;
+      const centerX = (this.position.x + this.endPoint.x) / 2;
+      const centerY = (this.position.y + this.endPoint.y) / 2;
+
+      const posX1 =
+        centerX +
+        (this.position.x - centerX) * Math.cos(this.rotation) -
+        (this.position.y - centerY) * Math.sin(this.rotation);
+      const posX2 =
+        centerX +
+        (this.endPoint.x - centerX) * Math.cos(this.rotation) -
+        (this.endPoint.y - centerY) * Math.sin(this.rotation);
+      const posY1 =
+        centerY +
+        (this.position.x - centerX) * Math.sin(this.rotation) +
+        (this.position.y - centerY) * Math.cos(this.rotation);
+      const posY2 =
+        centerY +
+        (this.endPoint.x - centerX) * Math.sin(this.rotation) +
+        (this.endPoint.y - centerY) * Math.cos(this.rotation);
+
+      minX = Math.min(posX1, posX2);
+      maxX = Math.max(posX1, posX2);
+      minY = Math.min(posY1, posY2);
+      maxY = Math.max(posY1, posY2);
+
+      xPos = centerX;
+      yPos = centerY;
+    } else {
+      xPos = minX - xBboxDiff / 2;
+      yPos = minY - yBboxDiff / 2;
     }
 
     return {
