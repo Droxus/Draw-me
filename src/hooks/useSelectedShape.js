@@ -12,7 +12,6 @@ export function useSelectedShape() {
     if (controls) {
       const listener = (event, controls) => {
         if (event.type == "updated") {
-          console.debug("Controls updated");
           if (event.key == "selectedShape") {
             setShape(controls?.selectedShape);
           }

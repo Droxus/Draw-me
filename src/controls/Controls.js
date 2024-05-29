@@ -1,7 +1,7 @@
-import { MODE } from "../constants.js";
-import { ShapeFactory } from "../drawables/factory.js";
-import { Point } from "../drawables/point.js";
-import { Scene } from "../scene/Scene.js";
+import { MODE } from '../constants.js';
+import { ShapeFactory } from '../drawables/factory.js';
+import { Point } from '../drawables/point.js';
+import { Scene } from '../scene/Scene.js';
 
 // const shapeClasses = {
 //   Rectangle: Rectangle,
@@ -56,17 +56,15 @@ export class Controls {
   }
 
   onSceneChange(event, scene) {
-    if (event.type == "updated") {
-      if (event.key == "added") {
-        this.selectedShape = event.shapes[event.shapes.length - 1];
+    if (event.type == "added") {
+      this.selectedShape = scene.shapes[scene.shapes.length - 1];
+      this.fireListeners("selectedShape");
+    }
+    if (event.type == "removed") {
+      if (event.shapes.some((shape) => shape.id == this.selectedShape?.id)) {
+        console.log("selected shape removed");
+        this.selectedShape = null;
         this.fireListeners("selectedShape");
-      }
-      if (event.key == "removed") {
-        if (event.shapes.some((shape) => shape.id == this.selectedShape?.id)) {
-          console.log("selected shape removed");
-          this.selectedShape = null;
-          this.fireListeners("selectedShape");
-        }
       }
     }
     if (event.type == "destroy") {
@@ -89,9 +87,10 @@ export class Controls {
 
   destroy() {
     this.listeners.forEach((listener) =>
-      listener.onChange({ type: "destroyed" }, this)
+      listener.onChange({ type: "destroy" }, this)
     );
     if (this.scene) {
+      this.scene.removeListener(this.onSceneChange);
       this.scene.canvas.removeEventListener("mousedown", this.onMouseDown);
       this.scene.canvas.removeEventListener("mouseup", this.onMouseUp);
       this.scene.canvas.removeEventListener("mousemove", this.onMouseMove);
