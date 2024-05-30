@@ -43,6 +43,7 @@ const VisuallyHiddenInput = styled("input")({
 export function ControlsView() {
   const { scene, controls, setControls } = useGlobalContext();
   const [importRef, setImportRef] = useState(null);
+  const [currentMode, setCurrentMode] = useState("");
   useEffect(() => {
     if (scene) {
       const controller = new Controls(scene);
@@ -79,29 +80,37 @@ export function ControlsView() {
         >
           <ControlButton
             onClick={() => {
+              setCurrentMode("Circle");
               controls.createNextShapeWith(ShapeFactory.createCircle);
             }}
+            currentMode={currentMode}
             icon={<CircleOutlined />}
             label="Circle"
           />
           <ControlButton
             onClick={() => {
+              setCurrentMode("Rectangle");
               controls.createNextShapeWith(ShapeFactory.createRectangle);
             }}
+            currentMode={currentMode}
             icon={<RectangleOutlined />}
             label="Rectangle"
           />
           <ControlButton
             onClick={() => {
+              setCurrentMode("Triangle");
               controls.createNextShapeWith(ShapeFactory.createTriangle);
             }}
+            currentMode={currentMode}
             icon={<ChangeHistoryOutlined />}
             label="Triangle"
           />
           <ControlButton
             onClick={() => {
+              setCurrentMode("Line");
               controls.createNextShapeWith(ShapeFactory.createLine);
             }}
+            currentMode={currentMode}
             icon={<RemoveOutlined />}
             label="Line"
           />
@@ -119,16 +128,20 @@ export function ControlsView() {
           <ControlButton
             sx={{ borderRadius: 2 }}
             onClick={() => {
+              setCurrentMode("Label");
               controls.createNextShapeWith(ShapeFactory.createLabel);
             }}
+            currentMode={currentMode}
             icon={<AbcOutlined />}
             label="Label"
           />
           <ControlButton
             sx={{ borderRadius: 2 }}
             onClick={() => {
+              setCurrentMode("Brush");
               controls.mode = MODE.DRAW;
             }}
+            currentMode={currentMode}
             icon={<BrushOutlined />}
             label="Brush"
           />
@@ -145,13 +158,15 @@ export function ControlsView() {
         >
           <ControlButton
             sx={{ borderRadius: 2 }}
-            onClick={() => (controls.mode = MODE.MOVE)}
+            onClick={() => {setCurrentMode("Move"); (controls.mode = MODE.MOVE)}}
+            currentMode={currentMode}
             icon={<OpenWithOutlined />}
             label="Move"
           />
           <ControlButton
             sx={{ borderRadius: 2 }}
-            onClick={() => (controls.mode = MODE.COPY)}
+            onClick={() => {setCurrentMode("Copy"); (controls.mode = MODE.COPY)}}
+            currentMode={currentMode}
             icon={<ContentCopyOutlined />}
             label="Copy"
           />
@@ -169,14 +184,17 @@ export function ControlsView() {
           <ControlButton
             sx={{ borderRadius: 2 }}
             onClick={() => {
+              setCurrentMode("Import");
               importRef.click();
             }}
+            currentMode={currentMode}
             icon={<FileUploadOutlined />}
             label="Import"
           />
           <ControlButton
             sx={{ borderRadius: 2 }}
-            onClick={() => scene.export(`draw_me-${new Date().getTime()}.png`)}
+            onClick={() => {setCurrentMode("Export"); scene.export(`draw_me-${new Date().getTime()}.png`)}}
+            currentMode={currentMode}
             icon={<FileDownloadOutlined />}
             label="Export"
           />
