@@ -25,6 +25,7 @@ import {
 import { MODE } from '../constants';
 import { ShapeFactory } from '../drawables/factory';
 import { useGlobalContext } from '../GlobalContext';
+import { useSelectedShape } from '../hooks/useSelectedShape';
 import { Controls } from './';
 import { ControlButton } from './ControlButton';
 
@@ -44,6 +45,7 @@ export function ControlsView() {
   const { scene, controls, setControls } = useGlobalContext();
   const [importRef, setImportRef] = useState(null);
   const [currentMode, setCurrentMode] = useState("");
+  const selectedShape = useSelectedShape();
   useEffect(() => {
     if (scene) {
       const controller = new Controls(scene);
@@ -53,6 +55,9 @@ export function ControlsView() {
       };
     }
   }, [scene]);
+  useEffect(() => {
+    setCurrentMode("Move");
+  }, [selectedShape]);
   const importFile = (event) =>
     controls.createNextShapeWith(({ x, y }) =>
       ShapeFactory.createImage({
@@ -158,14 +163,20 @@ export function ControlsView() {
         >
           <ControlButton
             sx={{ borderRadius: 2 }}
-            onClick={() => {setCurrentMode("Move"); (controls.mode = MODE.MOVE)}}
+            onClick={() => {
+              setCurrentMode("Move");
+              controls.mode = MODE.MOVE;
+            }}
             currentMode={currentMode}
             icon={<OpenWithOutlined />}
             label="Move"
           />
           <ControlButton
             sx={{ borderRadius: 2 }}
-            onClick={() => {setCurrentMode("Copy"); (controls.mode = MODE.COPY)}}
+            onClick={() => {
+              setCurrentMode("Copy");
+              controls.mode = MODE.COPY;
+            }}
             currentMode={currentMode}
             icon={<ContentCopyOutlined />}
             label="Copy"
@@ -193,7 +204,10 @@ export function ControlsView() {
           />
           <ControlButton
             sx={{ borderRadius: 2 }}
-            onClick={() => {setCurrentMode("Export"); scene.export(`draw_me-${new Date().getTime()}.png`)}}
+            onClick={() => {
+              setCurrentMode("Export");
+              scene.export(`draw_me-${new Date().getTime()}.png`);
+            }}
             currentMode={currentMode}
             icon={<FileDownloadOutlined />}
             label="Export"
