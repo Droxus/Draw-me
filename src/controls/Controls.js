@@ -1,7 +1,7 @@
-import { MODE } from '../constants.js';
-import { ShapeFactory } from '../drawables/factory.js';
-import { Point } from '../drawables/point.js';
-import { Scene } from '../scene/Scene.js';
+import { MODE } from "../constants.js";
+import { ShapeFactory } from "../drawables/factory.js";
+import { Point } from "../drawables/point.js";
+import { Scene } from "../scene/Scene.js";
 
 // const shapeClasses = {
 //   Rectangle: Rectangle,
@@ -240,6 +240,7 @@ export class Controls {
       case MODE.MOVE:
         if (this.selectedShape) {
           let prevPosition = this.selectedShape.position;
+          this.selectedShape.position = position;
           if (this.selectedShape.endPoint) {
             const xDiff = position.x - prevPosition.x;
             const yDiff = position.y - prevPosition.y;
