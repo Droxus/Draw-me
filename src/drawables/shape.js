@@ -66,7 +66,7 @@ export class Shape {
 
     // Copy all properties
     for (const key in this) {
-      if (this.hasOwnProperty(key)) {
+      if (this.hasOwnProperty(key) && !["listeners"].includes(key)) {
         // Perform a deep copy if necessary
         if (typeof this[key] === "object" && this[key] !== null) {
           copy[key] = JSON.parse(JSON.stringify(this[key]));
