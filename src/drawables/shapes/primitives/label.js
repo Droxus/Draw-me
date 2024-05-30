@@ -42,6 +42,7 @@ export class Label extends Primitive {
     lines.forEach((line, i) => {
       ctx.fillText(line, 0, 0 - textHeight / 2 + lineHeight * i);
     });
+    super.draw(ctx);
 
     this.drawBorder(ctx);
   }

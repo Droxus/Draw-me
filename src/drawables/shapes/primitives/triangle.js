@@ -1,4 +1,4 @@
-import { Primitive } from "../primitive.js";
+import { Primitive } from '../primitive.js';
 
 /**
  *
@@ -39,6 +39,7 @@ export class Triangle extends Primitive {
     ctx.fill();
 
     this.drawBorder(ctx);
+    super.draw(ctx);
   }
 
   drawBorder(ctx) {

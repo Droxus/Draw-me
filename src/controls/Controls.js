@@ -184,10 +184,10 @@ export class Controls {
         this.shapeCreating.width = area.width;
         this.shapeCreating.height = area.height;
         if (this.shapeCreating.position) {
-          this.shapeCreating.position.x =
-            this.startSelecting.x + area.width / 2;
-          this.shapeCreating.position.y =
-            this.startSelecting.y + area.height / 2;
+          this.shapeCreating.position = new Point(
+            this.startSelecting.x + area.width / 2,
+            this.startSelecting.y + area.height / 2
+          );
         }
         scene.selectArea(area);
         break;
@@ -240,14 +240,18 @@ export class Controls {
       case MODE.MOVE:
         if (this.selectedShape) {
           let prevPosition = this.selectedShape.position;
-          this.selectedShape.position = position;
           if (this.selectedShape.endPoint) {
             const xDiff = position.x - prevPosition.x;
             const yDiff = position.y - prevPosition.y;
-            this.selectedShape.endPoint.x += xDiff / 2;
-            this.selectedShape.endPoint.y += yDiff / 2;
-            this.selectedShape.position.x -= xDiff / 2;
-            this.selectedShape.position.y -= yDiff / 2;
+            const end = this.selectedShape.endPoint;
+            this.selectedShape.endPoint = new Point(
+              end.x + xDiff / 2,
+              end.y + yDiff / 2
+            );
+            this.selectedShape.position = new Point(
+              position.x - xDiff / 2,
+              position.y - yDiff / 2
+            );
           }
           scene.update();
         }
@@ -291,8 +295,7 @@ export class Controls {
             this.startSelecting.y + area.height / 2;
           if (this.shapeCreating.endPoint) {
             this.shapeCreating.position = { x, y };
-            this.shapeCreating.endPoint.x = position.x;
-            this.shapeCreating.endPoint.y = position.y;
+            this.shapeCreating.endPoint = new Point(position.x, position.y);
           }
           scene.selectArea(area);
         }

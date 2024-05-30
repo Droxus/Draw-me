@@ -1,4 +1,4 @@
-import { Primitive } from "../primitive.js";
+import { Primitive } from '../primitive.js';
 
 /**
  *
@@ -28,6 +28,7 @@ export class Circle extends Primitive {
     ctx.fill();
 
     this.drawBorder(ctx);
+    super.draw(ctx);
   }
 
   drawBorder(ctx) {

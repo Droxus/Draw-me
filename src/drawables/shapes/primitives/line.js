@@ -41,6 +41,7 @@ export class Line extends Primitive {
     ctx.lineTo(this.endPoint.x, this.endPoint.y);
     ctx.stroke();
     ctx.closePath();
+    super.draw(ctx);
   }
 
   /**

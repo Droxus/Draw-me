@@ -12,12 +12,29 @@
 export class Shape {
   static layerIndexCounter = 0;
   #layerIndex = Shape.layerIndexCounter++;
+  listeners = new Set();
 
   constructor() {
     this.id = Shape.#idGenerator.next().value;
     if (this.constructor == Shape) {
       throw new Error("Abstract classes can't be instantiated.");
     }
+  }
+
+  addListener(listener) {
+    console.debug("hello");
+    this.listeners.add(listener);
+  }
+  removeListener(listener) {
+    console.debug("bye");
+    this.listeners.delete(listener);
+  }
+
+  fireListeners({ type, ...rest }) {
+    console.log("fire shape listeners on '%s' change", rest.key);
+    this.listeners.forEach((callback) =>
+      callback({ type: type || "updated", ...rest }, this)
+    );
   }
 
   get type() {
@@ -40,7 +57,7 @@ export class Shape {
   })();
 
   async draw() {
-    throw new Error("Method 'draw()' must be implemented.");
+    this.fireListeners({ type: "updated" }, this);
   }
 
   copy() {

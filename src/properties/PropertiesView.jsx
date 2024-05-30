@@ -10,16 +10,13 @@ import {
   Typography,
 } from '@mui/material';
 
+import { Point } from '../drawables/point';
 import { useGlobalContext } from '../GlobalContext';
 import { useSelectedShape } from '../hooks';
 
 ["position", "rotation", "color", "border", "width", "height"];
 
-const NumberInput = ({ label, value: propValue, onChange, units = "px" }) => {
-  const [value, setValue] = useState(propValue);
-  useEffect(() => {
-    setValue(value);
-  }, [propValue]);
+const NumberInput = ({ label, value, onChange, units = "px" }) => {
   return (
     <TextField
       label={label}
@@ -30,7 +27,6 @@ const NumberInput = ({ label, value: propValue, onChange, units = "px" }) => {
           event.target.value.slice(0, 4) || "0"
         ).toString(10);
         if (/^[\d|\.?]+$/g.test(value) || value === "") {
-          setValue(value);
           onChange({ ...event, target: { ...event.target, value } });
         }
       }}
@@ -42,25 +38,35 @@ const NumberInput = ({ label, value: propValue, onChange, units = "px" }) => {
   );
 };
 
-const PositionProperty = ({ shape, scene, property, title = "Position" }) => (
+const PositionProperty = ({ value, onChange, title = "Position" }) => (
   <Stack direction="column" spacing={1}>
     <Typography variant="caption">{title}</Typography>
     <Stack direction="row" spacing={1}>
       <NumberInput
         label="X"
-        value={shape[property]?.x}
-        onChange={(event) => {
-          shape.position.x = event.target.value;
-          scene.update();
-        }}
+        value={value.x}
+        onChange={(event) =>
+          onChange({
+            ...event,
+            target: {
+              ...event.target,
+              value: new Point(event.target.value, value.y),
+            },
+          })
+        }
       />
       <NumberInput
         label="Y"
-        value={shape[property]?.y}
-        onChange={(event) => {
-          shape.position.y = event.target.value;
-          scene.update();
-        }}
+        value={value.y}
+        onChange={(event) =>
+          onChange({
+            ...event,
+            target: {
+              ...event.target,
+              value: new Point(value.x, event.target.value),
+            },
+          })
+        }
       />
     </Stack>
   </Stack>
@@ -68,50 +74,28 @@ const PositionProperty = ({ shape, scene, property, title = "Position" }) => (
 
 const RendererByProperty = {
   position: PositionProperty,
-  startPoint: (props) => (
-    <PositionProperty {...props} property="position" title="Start Point" />
-  ),
+  startPoint: (props) => <PositionProperty {...props} title="Start Point" />,
   endPoint: (props) => <PositionProperty {...props} title="End Point" />,
-  rotation: ({ shape, scene, property }) => (
+  rotation: ({ value, onChange }) => (
     <NumberInput
       label="Rotation"
-      value={shape.rotation}
-      onChange={(event) => {
-        shape.rotation = event.target.value;
-        scene.update();
-      }}
+      value={value}
+      onChange={onChange}
       units="rad"
     />
   ),
-  color: ({ shape, scene, property }) => {
-    const [value, setValue] = useState(shape.color);
-    useEffect(() => {
-      setValue(shape.color);
-    }, [shape.color]);
+  color: ({ value, onChange }) => {
     return (
       <TextField
-        key={`${shape.id}-${property}`}
         label="Fill color"
         type="color"
         value={value}
-        onChange={(event) => {
-          shape.color = event.target.value;
-          scene.update();
-          setValue(event.target.value);
-        }}
+        onChange={onChange}
         size="small"
       />
     );
   },
-  border: ({ shape, scene, property }) => {
-    const [color, setColor] = useState();
-    useEffect(() => {
-      setColor(shape.border.color);
-    }, [shape.border.color]);
-    const [width, setWidth] = useState(shape.border.width);
-    useEffect(() => {
-      setWidth(shape.border.width);
-    }, [shape.border.width]);
+  border: ({ value, onChange }) => {
     return (
       <Stack direction="column" spacing={1}>
         <Typography variant="caption">Border</Typography>
@@ -120,63 +104,38 @@ const RendererByProperty = {
             sx={{ flexGrow: 1 }}
             label="Color"
             type="color"
-            value={color}
+            value={value.color}
             onChange={(event) => {
-              setColor(event.target.value);
-              shape.border.color = event.target.value;
-              scene.update();
+              value.color = event.target.value;
+              onChange({ ...event, target: { ...event.target, value } });
             }}
             size="small"
             fullWidth
           />
           <NumberInput
             label="Thickness"
-            value={width}
+            value={value.width}
             onChange={(event) => {
-              setWidth(event.target.value);
-              shape.border.width = event.target.value;
-              scene.update();
+              value.width = event.target.value;
+              onChange({ ...event, target: { ...event.target, value } });
             }}
           />
         </Stack>
       </Stack>
     );
   },
-  width: ({ shape, scene, property }) => (
-    <NumberInput
-      label="Width"
-      value={shape.width}
-      onChange={(event) => {
-        shape.width = event.target.value > 0 ? event.target.value : shape.width;
-        scene.update();
-      }}
-    />
+  width: ({ value, onChange }) => (
+    <NumberInput label="Width" value={value} onChange={onChange} />
   ),
-  height: ({ shape, scene, property }) => (
-    <NumberInput
-      label="Height"
-      value={shape.height}
-      onChange={(event) => {
-        shape.height =
-          event.target.value > 0 ? event.target.value : shape.height;
-        scene.update();
-      }}
-    />
+  height: ({ value, onChange }) => (
+    <NumberInput label="Height" value={value} onChange={onChange} />
   ),
-  text: ({ shape, scene, property }) => {
-    const [value, setValue] = useState(shape[property]);
-    useEffect(() => {
-      setValue(shape[property]);
-    }, [shape[property]]);
+  text: ({ value, onChange }) => {
     return (
       <TextField
         label="Text"
         value={value}
-        onChange={(event) => {
-          shape[property] = event.target.value;
-          scene.update();
-          setValue(event.target.value);
-        }}
+        onChange={onChange}
         size="small"
         InputProps={{
           multiline: true,
@@ -189,7 +148,20 @@ const RendererByProperty = {
 export function PropertiesView() {
   const { scene } = useGlobalContext();
   const selectedShape = useSelectedShape();
-  const selected = selectedShape ?? scene;
+  const [[selected], setSelected] = useState([]);
+  useEffect(() => {
+    console.debug("selectedShape", selectedShape);
+    if (selectedShape) {
+      setSelected([selectedShape]);
+      const listener = (event, shape) => {
+        setSelected([shape]);
+      };
+      selectedShape.addListener(listener);
+      return () => selectedShape.removeListener(listener);
+    } else {
+      setSelected([scene]);
+    }
+  }, [scene, selectedShape]);
   if (!selected) return null;
   return (
     <Stack direction="column" spacing={2}>
@@ -206,9 +178,11 @@ export function PropertiesView() {
           return (
             <Renderer
               key={`${selected.id}-${property}`}
-              property={property}
-              shape={selected}
-              scene={scene}
+              value={selected[property]}
+              onChange={(event) => {
+                selected[property] = event.target.value;
+                scene.update();
+              }}
             />
           );
         })}

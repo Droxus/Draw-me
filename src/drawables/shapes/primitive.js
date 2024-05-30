@@ -1,5 +1,5 @@
-import { Shape } from "../shape.js";
-import { Border } from "./border.js";
+import { Shape } from '../shape.js';
+import { Border } from './border.js';
 
 /**
  *
@@ -40,10 +40,6 @@ export class Primitive extends Shape {
     if (this.constructor == Primitive) {
       throw new Error("Abstract classes can't be instantiated.");
     }
-  }
-
-  draw() {
-    // console.log("Drawing");
   }
 
   drawBorder(ctx) {
@@ -200,90 +196,6 @@ export class Primitive extends Shape {
       (point) =>
         point.x >= minX && point.x <= maxX && point.y >= minY && point.y <= maxY
     );
-  }
-
-  /**
-   * @return {Point}
-   */
-  get position() {
-    return this.position;
-  }
-
-  /**
-   * @return {Number}
-   */
-  get rotation() {
-    return this.rotation;
-  }
-
-  /**
-   * @return {String}
-   */
-  get color() {
-    return this.color;
-  }
-
-  /**
-   * @return {Border}
-   */
-  get border() {
-    return this.border;
-  }
-
-  /**
-   * @return {Number}
-   */
-  get width() {
-    return this.width;
-  }
-
-  /**
-   * @return {Number}
-   */
-  get height() {
-    return this.height;
-  }
-
-  /**
-   * @param {Point} newPosition
-   */
-  set position(newPosition) {
-    this.position = newPosition;
-  }
-
-  /**
-   * @param {Number} newRotation
-   */
-  set rotation(newRotation) {
-    this.rotation = newRotation;
-  }
-
-  /**
-   * @param {String} newColor
-   */
-  set color(newColor) {
-    this.color = newColor;
-  }
-
-  /**
-   * @param {Border} newBorder
-   */
-  set border(newBorder) {
-    this.border = newBorder;
-  }
-
-  /**
-   * @param {Number} newWidth
-   */
-  set width(newWidth) {
-    this.width = newWidth;
-  }
-
-  /**
-   * @param {Number} newHeight
-   */
-  set height(newHeight) {
-    this.height = newHeight;
   }
 
   getProperties() {

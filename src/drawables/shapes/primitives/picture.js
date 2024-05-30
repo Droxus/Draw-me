@@ -40,6 +40,7 @@ export class Picture extends Primitive {
       this.width,
       this.height
     );
+    super.draw(ctx);
 
     this.drawBorder(ctx);
   }

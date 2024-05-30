@@ -1,4 +1,4 @@
-import { Shape } from "../shape.js";
+import { Shape } from '../shape.js';
 
 /**
  *
@@ -44,6 +44,7 @@ export class Brush extends Shape {
     }
     ctx.stroke();
     ctx.closePath();
+    super.draw(ctx);
   }
 
   /**

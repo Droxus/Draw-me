@@ -1,4 +1,4 @@
-import { Primitive } from "../primitive.js";
+import { Primitive } from '../primitive.js';
 
 /**
  *
@@ -24,6 +24,7 @@ export class Rectangle extends Primitive {
     ctx.translate(x, y);
     ctx.rotate(this.rotation);
     ctx.fillRect(-this.width / 2, -this.height / 2, this.width, this.height);
+    super.draw(ctx);
 
     this.drawBorder(ctx);
   }
