@@ -37,6 +37,10 @@ export class Shape {
     );
   }
 
+  isInsideArea(area) {
+    return false;
+  }
+
   get type() {
     return this.constructor.name;
   }
