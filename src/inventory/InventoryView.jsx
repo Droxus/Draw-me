@@ -122,6 +122,8 @@ export function InventoryView() {
                             title="bring forward"
                             disabled={index === 0}
                             onClick={() => {
+                              const foundShapeIndex = scene.shapes.find(e => e.layerIndex == shape.layerIndex+1);
+                              foundShapeIndex.layerIndex -= 1;
                               shape.layerIndex += 1;
                               scene.update();
                             }}
@@ -132,6 +134,8 @@ export function InventoryView() {
                             disabled={index === theseShapes.length - 1}
                             title="bring backward"
                             onClick={() => {
+                              const foundShapeIndex = scene.shapes.find(e => e.layerIndex == shape.layerIndex-1);
+                              foundShapeIndex.layerIndex += 1;
                               shape.layerIndex -= 1;
                               scene.update();
                             }}
