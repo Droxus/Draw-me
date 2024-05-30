@@ -111,6 +111,12 @@ export class Controls {
     return this.selectedShape;
   }
 
+  selectById(id) {
+    this.selectedShape = this.scene.findById(id);
+    this.fireListeners("selectedShape");
+    return this.selectedShape;
+  }
+
   async onMouseDown(event) {
     const { offsetX, offsetY } = event;
     const position = new Point(offsetX, offsetY);

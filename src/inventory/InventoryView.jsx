@@ -70,7 +70,7 @@ export function InventoryView() {
                         !!shape &&
                         selectedShape.id == shape.id
                       }
-                      onClick={() => controls.select(shape.position)}
+                      onClick={() => controls.selectById(shape.id)}
                     >
                       <Stack
                         direction="column"

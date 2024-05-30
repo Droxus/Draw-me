@@ -104,6 +104,14 @@ export class Scene {
       .filter((shape) => shape.isPoint(position, this.ctx));
   }
 
+  /**
+   * @param {string} id shape id
+   * @returns {Shape | null}
+   */
+  findById(id) {
+    return this.shapes.find((shape) => shape.id == id);
+  }
+
   async update() {
     // console.log(this.#shapes);
     this.clear();
