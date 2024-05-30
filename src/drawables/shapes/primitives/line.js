@@ -13,6 +13,7 @@ import { Primitive } from '../primitive.js';
 
 export class Line extends Primitive {
   endPoint;
+  thickness = 1;
 
   constructor(position, endPoint, params) {
     super(params);
@@ -25,15 +26,12 @@ export class Line extends Primitive {
     const centerY = (this.position.y + this.endPoint.y) / 2;
     ctx.setTransform(1, 0, 0, 1, 0, 0);
 
-    this.width = Math.abs(this.endPoint.x - this.position.x);
-    this.height = Math.abs(this.endPoint.y - this.position.y);
-
     ctx.translate(centerX, centerY);
     ctx.rotate(this.rotation);
     ctx.translate(-centerX, -centerY);
 
     ctx.strokeStyle = this.color;
-    // ctx.lineWidth = this.border.width;
+    ctx.lineWidth = this.thickness;
     ctx.setLineDash([]);
 
     ctx.beginPath();
@@ -44,35 +42,15 @@ export class Line extends Primitive {
     super.draw(ctx);
   }
 
-  /**
-   * @return {Point}
-   */
-  get position() {
+  set startPoint(value) {
+    this.position = value;
+  }
+
+  get startPoint() {
     return this.position;
   }
 
-  /**
-   * @return {Point}
-   */
-  get endPoint() {
-    return this.endPoint;
-  }
-
-  /**
-   * @param {Point} newposition
-   */
-  set position(newposition) {
-    this.position = newposition;
-  }
-
-  /**
-   * @param {Point} newEndPoint
-   */
-  set endPoint(newEndPoint) {
-    this.endPoint = newEndPoint;
-  }
-
   getProperties() {
-    return ["startPoint", "endPoint", "rotation", "color"];
+    return ["startPoint", "endPoint", "thickness", "rotation", "color"];
   }
 }

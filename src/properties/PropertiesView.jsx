@@ -130,6 +130,9 @@ const RendererByProperty = {
   height: ({ value, onChange }) => (
     <NumberInput label="Height" value={value} onChange={onChange} />
   ),
+  thickness: ({ value, onChange }) => (
+    <NumberInput label="Thickness" value={value} onChange={onChange} />
+  ),
   text: ({ value, onChange }) => {
     return (
       <TextField
