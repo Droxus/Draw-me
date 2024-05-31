@@ -63,7 +63,6 @@ export class ShapeFactory {
       height: 50,
       border: border,
     });
-    console.log(rectangle);
     return rectangle;
   }
 

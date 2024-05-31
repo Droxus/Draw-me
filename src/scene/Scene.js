@@ -46,7 +46,7 @@ export class Scene {
     }
   }
 
-  resize(entries) {
+  resize() {
     this.canvas.style.width = this.canvas.width =
       this.canvas.parentElement.clientWidth;
     this.canvas.style.height = this.canvas.height =
@@ -113,12 +113,8 @@ export class Scene {
   }
 
   async update() {
-    // console.log(this.#shapes);
     this.clear();
     this.ctx.save();
-    // this.#shapes.forEach(async function (shape) {
-    //   await shape.draw(this.ctx);
-    // });
     this.setBackgroundColor(this.#color);
     for (const shape of this.shapes) {
       await shape.draw(this.ctx);
@@ -153,25 +149,10 @@ export class Scene {
    * @return {Object}
    */
   copyArea(area) {
-    const { x, y, width, height } = area;
-
     const shapesToCopy = this.#shapes.filter((shape) => {
-      // const shapeX = shape.position.x;
-      // const shapeY = shape.position.y;
-      // const shapeWidth = shape.width;
-      // const shapeHeight = shape.height;
-
       const isInside = shape.isInsideArea(area);
       return isInside;
-      // return (
-      //   shapeX >= x &&
-      //   shapeX + shapeWidth <= x + width &&
-      //   shapeY >= y &&
-      //   shapeY + shapeHeight <= y + height
-      // );
     });
-
-    // console.log(shapesToCopy);
 
     const copiedShapes = shapesToCopy.map((shape) => shape.copy());
 
@@ -183,13 +164,8 @@ export class Scene {
    * @param {Point} position
    */
   pasteArea(copiedShapes, position) {
-    const { x, y } = position;
-
     copiedShapes.forEach((shape) => {
       shape.id += "_copy";
-      // shape.position.x += x;
-      // shape.position.y += y;
-      // console.log(shape);
       this.#shapes.push(shape);
     });
 
@@ -205,7 +181,6 @@ export class Scene {
       .replace("image/png", "image/octet-stream");
 
     const element = document.createElement("a");
-    // const filename = "test.png";
 
     element.setAttribute("href", image);
     element.setAttribute("download", fileName);

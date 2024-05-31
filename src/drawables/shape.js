@@ -22,16 +22,13 @@ export class Shape {
   }
 
   addListener(listener) {
-    console.debug("hello");
     this.listeners.add(listener);
   }
   removeListener(listener) {
-    console.debug("bye");
     this.listeners.delete(listener);
   }
 
   fireListeners({ type, ...rest }) {
-    console.log("fire shape listeners on '%s' change", rest.key);
     this.listeners.forEach((callback) =>
       callback({ type: type || "updated", ...rest }, this)
     );
@@ -61,13 +58,10 @@ export class Shape {
   }
 
   copy() {
-    // Create a new instance of the same class
     const copy = new this.constructor();
 
-    // Copy all properties
     for (const key in this) {
       if (this.hasOwnProperty(key)) {
-        // Perform a deep copy if necessary
         if (typeof this[key] === "object" && this[key] !== null) {
           copy[key] = JSON.parse(JSON.stringify(this[key]));
         } else {
@@ -84,9 +78,6 @@ export class Shape {
   /**
    * @return {string}
    */
-  // get id() {
-  //   return this.#id;
-  // }
 
   /**
    * @return {number}

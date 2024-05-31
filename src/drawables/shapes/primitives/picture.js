@@ -1,4 +1,4 @@
-import { Primitive } from '../primitive.js';
+import { Primitive } from "../primitive.js";
 
 /**
  *
@@ -23,7 +23,6 @@ export class Picture extends Primitive {
   async draw(ctx) {
     const { x, y } = this.position;
 
-    // console.log(this.image);
     if (this.image == undefined) {
       await this.loadImage();
     }
@@ -31,8 +30,6 @@ export class Picture extends Primitive {
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.translate(x, y);
     ctx.rotate(this.rotation);
-    // console.log(this.image);
-    // console.log(this.width, this.height);
     ctx.drawImage(
       this.image,
       -this.width / 2,

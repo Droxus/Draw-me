@@ -1,5 +1,5 @@
-import { Shape } from '../shape.js';
-import { Border } from './border.js';
+import { Shape } from "../shape.js";
+import { Border } from "./border.js";
 
 /**
  *
@@ -60,12 +60,9 @@ export class Primitive extends Shape {
     }
   }
 
-  isPoint({ x, y }, ctx) {
-    console.log("hek");
+  isPoint({ x, y }) {
     const corners = this.getRotatedRectangleCorners();
     const bbox = this.getBoundingBox(corners);
-
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
 
     return (
       x >= bbox.x - bbox.width / 2 &&

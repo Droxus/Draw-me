@@ -3,12 +3,6 @@ import { ShapeFactory } from "../drawables/factory.js";
 import { Point } from "../drawables/point.js";
 import { Scene } from "../scene/Scene.js";
 
-// const shapeClasses = {
-//   Rectangle: Rectangle,
-//   Circle: Circle,
-//   // Add other shapes here...
-// };
-
 export class Controls {
   currentShape;
 
@@ -62,7 +56,6 @@ export class Controls {
     }
     if (event.type == "removed") {
       if (event.shapes.some((shape) => shape.id == this.selectedShape?.id)) {
-        console.log("selected shape removed");
         this.selectedShape = null;
         this.fireListeners("selectedShape");
       }
@@ -170,7 +163,6 @@ export class Controls {
         break;
 
       case MODE.CREATE:
-        console.log("creating shape");
         this.shapeCreating = await this.createShape(position);
         this.scene.add(this.shapeCreating);
         this.scene.update();
@@ -203,8 +195,6 @@ export class Controls {
         this.stopBrushDrawing();
         break;
       case MODE.MOVE:
-        // this.selectedShape = undefined;
-        // this.fireListeners("selectedShape");
         break;
       case MODE.COPY:
         if (this.mouseHold) {
@@ -228,7 +218,6 @@ export class Controls {
   }
 
   onMouseMove(event) {
-    // console.log(event);
     const isMouseClicked = event.which != 0;
     if (!isMouseClicked) return;
     const position = new Point(event.offsetX, event.offsetY);
