@@ -93,7 +93,11 @@ export class ShapeFactory {
   }
 
   static createBrush() {
+<<<<<<< Updated upstream
     const color = "#ff0000";
+=======
+    const color = "red";
+>>>>>>> Stashed changes
     const width = 2;
     const brush = new Brush({ color: color, width: width });
     return brush;
