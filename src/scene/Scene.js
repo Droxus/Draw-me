@@ -15,7 +15,7 @@ export class Scene {
   listeners = new Set();
 
   constructor(canvas) {
-    this.id = this.#generateId().next().value;
+    this.id = "#scene_" + Scene.#idGenerator.next().value;
 
     this.canvas = canvas;
     this.ctx = this.canvas.getContext("2d");
@@ -57,14 +57,14 @@ export class Scene {
   /**
    * @return {string}
    */
-  *#generateId() {
-    const maxId = 10000;
-    let id = 1;
 
+  static #idGenerator = (function* () {
+    let id = 1;
+    const maxId = 10000;
     while (id < maxId) {
       yield "#shape_" + id++;
     }
-  }
+  })();
 
   /**
    * @param {Shape} newShape
@@ -165,7 +165,7 @@ export class Scene {
    */
   pasteArea(copiedShapes, position) {
     copiedShapes.forEach((shape) => {
-      shape.id += "_copy";
+      shape.id += "_copy" + String(Scene.#idGenerator.next().value);
       this.#shapes.push(shape);
     });
 
