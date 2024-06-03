@@ -27,7 +27,7 @@ const NumberInput = ({ label, value, onChange, units = "px" }) => {
           event.target.value.slice(0, 4) || "0"
         ).toString(10);
         if (/^[\d|\.?]+$/g.test(value) || value === "") {
-          onChange({ ...event, target: { ...event.target, value } });
+          onChange({ ...event, target: { ...event.target, value: +value } });
         }
       }}
       size="small"
@@ -184,6 +184,11 @@ export function PropertiesView() {
               value={selected[property]}
               onChange={(event) => {
                 selected[property] = event.target.value;
+                // console.log(property)
+                // if (property == "position") {
+                //   selected[property].x = Number(selected[property].x)
+                //   selected[property].y = Number(selected[property].y)
+                // }
                 scene.update();
               }}
             />
