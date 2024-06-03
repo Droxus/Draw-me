@@ -184,11 +184,6 @@ export function PropertiesView() {
               value={selected[property]}
               onChange={(event) => {
                 selected[property] = event.target.value;
-                // console.log(property)
-                // if (property == "position") {
-                //   selected[property].x = Number(selected[property].x)
-                //   selected[property].y = Number(selected[property].y)
-                // }
                 scene.update();
               }}
             />
